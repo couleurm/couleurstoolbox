@@ -8,13 +8,15 @@
 
 ## 2. Programs
   - Chocolatey folder, which contains a script to install choco and a .bat to install whichever you want.
+  - Manual program download folder, with a bunch of .URLs that link to various programs.
+    - Extension .URLS for both Chromium and Firefox
   - In Video:
       - in `ffmpeg` list of scripts already setup with `Send To` feature sorted by encoder (nvenc/amd/x264)
         - 4K upscaling using neirest neighbor/lanczos
         - t-mixing
         - downscale proxy
         - remove audio
-        - 
+        -
       - In `OBS`: download links, profiles and themes that comes with handy shortcuts to drag in.
         - Flat Dark and Super Dark themes
         - `1080p360 14CQ`, `720p360 13CQ` and `1080p60 low bitrate` profiles
@@ -23,11 +25,12 @@
 
 ## 3. Windows 10 settings and debloat
 
-  - Debloating scripts
+  - **Debloating scripts**
     - Chris Titus Tech's toolbox
     - Sycnex's Windows10Debloater
 
-  - W10 shortcuts
+
+  - **W10 shortcuts**
     - Default Apps
     - Disk manager
     - Game mode
