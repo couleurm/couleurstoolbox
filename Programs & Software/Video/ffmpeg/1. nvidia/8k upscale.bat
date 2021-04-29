@@ -1,1 +1,0 @@
-ffmpeg -i "%1" -vf scale=7680:4320:flags=neighbor -vcodec hevc_nvenc -preset lossless "%1- Upscaled to 8K.mp4"

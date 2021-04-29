@@ -1,1 +1,0 @@
-ffmpeg -i "%1" -vf scale=3840:2160:flags=neighbor -vcodec hevc_nvenc -preset lossless "%1- Upscaled to 4K.mp4"
