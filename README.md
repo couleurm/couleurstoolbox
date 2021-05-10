@@ -1,5 +1,17 @@
 # Welcome to this very handy little toolbox I've made.
 
+## Preparations
+
+- There's a few things you need to run in order to be able to execute some of the stuff in this toolbox.
+
+# Step by step way:
+
+### - Set up Lunar Client
+### - Set up FFmpeg
+### - Set up OBS
+
+# Progressive way:
+
 ## 1. Download windows
 
   - Link to Microsoft's official download page
@@ -45,7 +57,9 @@
     - User Account Control settings
     - Windows appearance
 
+## 4. Credits
 
+Inspiration came from Fr33thy's TO-DO folder in his tutorials
 
 also join my [**discord**](https://dsc.gg/ctt)
 
