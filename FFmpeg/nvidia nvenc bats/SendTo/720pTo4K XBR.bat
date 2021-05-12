@@ -2,5 +2,3 @@ ffmpeg -hwaccel cuda -threads 8 -i %1 -vf xbr=3 -c:v hevc_nvenc -preset p7 -rc c
 pause
 
 ::if you change the value after XBR it'll change how much times it multiplies the resolution.
-::QP18 is recommended, go higher to decrease filesize and lower to increase quality
-::you need FFmpeg 4.4 or newer

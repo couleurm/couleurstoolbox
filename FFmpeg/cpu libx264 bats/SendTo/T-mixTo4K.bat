@@ -3,4 +3,3 @@ pause
 
 ::Change value after tmix=frames= to be the number of blur frames
 ::Change value after fps= to be the FPS you want to render in
-::CRF15 is recommended, go higher to decrease filesize and lower to increase quality.
