@@ -1,0 +1,9 @@
+You can choose to remove acceleration from your mouse by applying these regedits.
+
+To see your main monitor's scale:
+
+Right click your desktop and click Display Settings
+
+Scroll down to Scale and layout
+
+See which percentage is in Change the size of text, apps, and other items.
