@@ -1,0 +1,1 @@
+You can use "-quality speed" if these scripts are too slow for you.
