@@ -1,0 +1,1 @@
+Use QP10 or lower if you're going to be re-encoding these in any way. (change -qp_i, -qp_p and -qp_b)
