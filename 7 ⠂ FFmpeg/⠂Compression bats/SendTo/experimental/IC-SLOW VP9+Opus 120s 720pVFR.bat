@@ -1,0 +1,2 @@
+ffmpeg -i %1 -vf "scale='-2':'min(720,ih):flags=lanczos',mpdecimate=max=4" -c:v libvpx-vp9 -b:v 485k -crf 33 -row-mt 1 -g 900 -speed 2 -auto-alt-ref 1 -lag-in-frames 25 -tile-columns 2 -tile-rows 2 -frame-parallel 1 -pass 1 -vsync vfr -an -f null NUL
+ffmpeg -i %1 -vf "scale='-2':'min(720,ih):flags=lanczos',mpdecimate=max=4" -c:v libvpx-vp9 -b:v 485k -crf 33 -row-mt 1 -g 900 -speed 2 -auto-alt-ref 1 -lag-in-frames 25 -tile-columns 2 -tile-rows 2 -frame-parallel 1 -pass 2 -vsync vfr -c:a libopus -b:a 56k "%~dpn1 (VP9720p).mp4"
