@@ -14,7 +14,15 @@ set size=Discord
 :: Resolution (tries to keep high res)
 set askfocus=true
 set focus=Framerate
-:: 
+:: Hardware acceleration
+:: Due to hardware encoders being not very good for this this script will still use libx264 for encoding.
+:: Available options (same as in ffmpeg -hwaccel):
+:: cpu (none)
+:: cuda (nvidia)
+:: d3d11va (everything)
+:: any other hwaccel
+set hwaccel=cpu
+::
 :: ADVANCED OPTIONS
 :: Be careful, only change them if you know what they do!
 ::
@@ -170,6 +178,12 @@ if %videobitrate% GEQ %target1% (
     set preset=veryslow
     set qpmin=0
 )
+:: hwaccel
+if %hwaccel% == cpu (
+    set hwaccel=
+) else (
+    set hwaccel=-hwaccel %hwaccel%
+)
 :: Preset force
 if %forcepreset% == no (
     echo Not forcing preset
@@ -185,7 +199,7 @@ if %focus% == Original (
 :: Echo settings
 echo %res%p%fps%, preset %preset%
 :: Run ffmpeg
-ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
+ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
