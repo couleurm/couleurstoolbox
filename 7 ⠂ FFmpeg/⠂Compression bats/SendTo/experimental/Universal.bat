@@ -14,29 +14,38 @@ set size=Discord
 :: Resolution (tries to keep high res)
 set askfocus=true
 set focus=Framerate
-:: 
+:: Hardware acceleration
+:: Due to hardware encoders being not very good for this this script will still use libx264 for encoding.
+:: Available options (same as in ffmpeg -hwaccel):
+:: cpu (none)
+:: cuda (nvidia)
+:: d3d11va (everything)
+:: any other hwaccel
+set hwaccel=cpu
+::
 :: ADVANCED OPTIONS
 :: Be careful, only change them if you know what they do!
 ::
 set audioencoder=aac
-set audiobitrateperc=10
+set audiobitratepercent=10
+set audioencoderoptions=
 set minaudiobitrate=128
 set maxaudiobitrate=256
 set mintotalbitrate=500
-set bitratetargetmult=1
+set bitratetargetpercent=100
 set videoencoder=libx264
 set forcepreset=no
 set twopasscommand=-pass 
 set encoderopts=-g 600
 set videofilters=,mpdecimate=max=6
 :: Bitrate targets
-set /A target1 = 5000 * %bitratetargetmult%
-set /A target2 = 3000 * %bitratetargetmult%
-set /A target3 = 2000 * %bitratetargetmult%
-set /A target4 = 1400 * %bitratetargetmult%
-set /A target5 = 1000 * %bitratetargetmult%
-set /A target6 = 700 * %bitratetargetmult%
-set /A target7 = 500 * %bitratetargetmult%
+set /A target1 = 50 * %bitratetargetpercent%
+set /A target2 = 30 * %bitratetargetpercent%
+set /A target3 = 20 * %bitratetargetpercent%
+set /A target4 = 14 * %bitratetargetpercent%
+set /A target5 = 10 * %bitratetargetpercent%
+set /A target6 = 7 * %bitratetargetpercent%
+set /A target7 = 5 * %bitratetargetpercent%
 :: Input check
 if %1check == check (
     echo ERROR: no input file
@@ -86,9 +95,9 @@ if %bitrate% LEQ %mintotalbitrate% (
     pause && exit
 )
 :: Audio bitrate
-set /A audiobitrate = %bitrate% / %audiobitrateperc%
-if %audiobitrate% GEQ %maxaudiobitrate% (set audiobitrate=256)
-if %audiobitrate% LEQ %minaudiobitrate% (set audiobitrate=128)
+set /A audiobitrate = %bitrate% / %audiobitratepercent%
+if %audiobitrate% GEQ %maxaudiobitrate% (set audiobitrate=%maxaudiobitrate%)
+if %audiobitrate% LEQ %minaudiobitrate% (set audiobitrate=%minaudiobitrate%)
 :: Video bitrate
 set /A videobitrate = %bitrate% - %audiobitrate%
 echo bitrate: %bitrate% (audio: %audiobitrate%, video: %videobitrate%)
@@ -169,6 +178,12 @@ if %videobitrate% GEQ %target1% (
     set preset=veryslow
     set qpmin=0
 )
+:: hwaccel
+if %hwaccel% == cpu (
+    set hwaccel=
+) else (
+    set hwaccel=-hwaccel %hwaccel%
+)
 :: Preset force
 if %forcepreset% == no (
     echo Not forcing preset
@@ -184,7 +199,7 @@ if %focus% == Original (
 :: Echo settings
 echo %res%p%fps%, preset %preset%
 :: Run ffmpeg
-ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% -b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
+ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -y %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
