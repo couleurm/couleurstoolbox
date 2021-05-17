@@ -26,6 +26,7 @@ set mintotalbitrate=500
 set bitratetargetmult=1
 set videoencoder=libx264
 set forcepreset=no
+set twopasscommand=-pass 
 set encoderopts=-g 600
 set videofilters=,mpdecimate=max=6
 :: Bitrate targets
@@ -183,7 +184,7 @@ if %focus% == Original (
 :: Echo settings
 echo %res%p%fps%, preset %preset%
 :: Run ffmpeg
-ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% -pass 1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% -pass 2 -c:a %audioencoder% -b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
+ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% -b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
