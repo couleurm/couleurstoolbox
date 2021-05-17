@@ -31,6 +31,8 @@ if %size% == ClassicNitro (set filesize=409600
 ) else if %size% == Nitro (set filesize=819200
 ) else if %size% == Discord (set filesize=65535
 ) else (set filesize=%size%)
+:: Fix issues with overhead
+set /A filesize = %filesize% - 1000
 :: Calculate bitrate
 set /A bitrate = %filesize% / %time%
 if %bitrate% LEQ %mintotalbitrate% (
@@ -52,7 +54,7 @@ if %videobitrate% GEQ 5000 (
 ) else if %videobitrate% GEQ 3000 (
     set res=1080
     set fps=60
-    set preset=medium
+    set preset=slow
 ) else if %videobitrate% GEQ 2000 (
     if %focus% == Framerate (
         set res=720
