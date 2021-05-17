@@ -23,9 +23,18 @@ set audiobitrateperc=10
 set minaudiobitrate=128
 set maxaudiobitrate=256
 set mintotalbitrate=500
+set bitratetargetmult=1
 set videoencoder=libx264
 set encoderopts=-g 600
 set videofilters=,mpdecimate=max=6
+:: Bitrate targets
+set /A target1 = 5000 * %bitratetargetmult%
+set /A target2 = 3000 * %bitratetargetmult%
+set /A target3 = 2000 * %bitratetargetmult%
+set /A target4 = 1400 * %bitratetargetmult%
+set /A target5 = 1000 * %bitratetargetmult%
+set /A target6 = 700 * %bitratetargetmult%
+set /A target7 = 500 * %bitratetargetmult%
 :: Input check
 if %1check == check (
     echo ERROR: no input file
@@ -82,17 +91,17 @@ if %audiobitrate% LEQ %minaudiobitrate% (set audiobitrate=128)
 set /A videobitrate = %bitrate% - %audiobitrate%
 echo bitrate: %bitrate% (audio: %audiobitrate%, video: %videobitrate%)
 :: Choosing encoding settings
-if %videobitrate% GEQ 5000 (
+if %videobitrate% GEQ %target1% (
     set res=1440
     set fps=60
     set preset=medium
     set qpmin=20
-) else if %videobitrate% GEQ 3000 (
+) else if %videobitrate% GEQ %target2% (
     set res=1080
     set fps=60
     set preset=slow
     set qpmin=18
-) else if %videobitrate% GEQ 2000 (
+) else if %videobitrate% GEQ %target3% (
     if %focus% == Framerate (
         set res=720
         set fps=60
@@ -104,7 +113,7 @@ if %videobitrate% GEQ 5000 (
         set preset=slow
         set qpmin=18
     )
-) else if %videobitrate% GEQ 1400 (
+) else if %videobitrate% GEQ %target4% (
     if %focus% == Framerate (
         set res=720
         set fps=60
@@ -116,7 +125,7 @@ if %videobitrate% GEQ 5000 (
         set preset=slower
         set qpmin=18
     )
-) else if %videobitrate% GEQ 1000 (
+) else if %videobitrate% GEQ %target5% (
     if %focus% == Framerate (
         set res=720
         set fps=60
@@ -128,7 +137,7 @@ if %videobitrate% GEQ 5000 (
         set preset=veryslow
         set qpmin=18
     )
-) else if %videobitrate% GEQ 700 (
+) else if %videobitrate% GEQ %target6% (
     if %focus% == Framerate (
         set res=540
         set fps=60
@@ -140,7 +149,7 @@ if %videobitrate% GEQ 5000 (
         set preset=veryslow
         set qpmin=19
     )
-) else if %videobitrate% GEQ 500 (
+) else if %videobitrate% GEQ %target7% (
     if %focus% == Framerate (
         set res=360
         set fps=45
