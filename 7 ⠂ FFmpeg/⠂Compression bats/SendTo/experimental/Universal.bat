@@ -29,7 +29,7 @@ set videofilters=,mpdecimate=max=6
 :: Input check
 if %1check == check (
     echo ERROR: no input file
-    echo Drag this .bat into the SendTo folder
+    echo Drag this .bat into the SendTo folder (press Windows + R and type in shell:sendto)
     echo After that, right click on your video, drag over to Send To and click on this bat there.
     pause
     exit
