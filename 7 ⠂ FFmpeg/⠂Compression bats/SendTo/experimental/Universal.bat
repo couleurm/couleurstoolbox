@@ -48,9 +48,11 @@ if %asksize% == true (
     cls
     echo What filesize do you want to target?
     echo Discord - 8MB
-    echo NitroClassic - 50MB
+    echo ClassicNitro - 50MB
     echo Nitro - 100MB
+    set /p size=
 )
+echo %size%
 :: Setting target filesize (in kbit)
 if %size% == ClassicNitro (set filesize=409600
 ) else if %size% == Nitro (set filesize=819200
