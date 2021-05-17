@@ -25,6 +25,7 @@ set maxaudiobitrate=256
 set mintotalbitrate=500
 set bitratetargetmult=1
 set videoencoder=libx264
+set forcepreset=no
 set encoderopts=-g 600
 set videofilters=,mpdecimate=max=6
 :: Bitrate targets
@@ -166,6 +167,12 @@ if %videobitrate% GEQ %target1% (
     set fps=30
     set preset=veryslow
     set qpmin=0
+)
+:: Preset force
+if %forcepreset% == no (
+    echo Not forcing preset
+) else (
+    set preset=%forcepreset%
 )
 :: Set -vf param
 if %focus% == Original (
