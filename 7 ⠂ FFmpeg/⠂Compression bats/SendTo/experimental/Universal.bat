@@ -26,6 +26,15 @@ set mintotalbitrate=500
 set videoencoder=libx264
 set encoderopts=-g 600
 set videofilters=,mpdecimate=max=6
+:: Input check
+if %1check == check (
+    echo ERROR: no input file
+    echo Drag this .bat into the SendTo folder
+    echo After that, right click on your video, drag over to Send To and click on this bat there.
+    pause
+    exit
+)
+:: Length questions
 set /p starttime=Where do you want your clip to start (in seconds): 
 set /p time=How long after the start time do you want it to be: 
 :: Focus and size questions
@@ -52,7 +61,6 @@ if %asksize% == true (
     echo Nitro - 100MB
     set /p size=
 )
-echo %size%
 :: Setting target filesize (in kbit)
 if %size% == ClassicNitro (set filesize=409600
 ) else if %size% == Nitro (set filesize=819200
