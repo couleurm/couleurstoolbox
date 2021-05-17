@@ -19,7 +19,8 @@ set focus=Framerate
 :: Be careful, only change them if you know what they do!
 ::
 set audioencoder=aac
-set audiobitrateperc=10
+set audiobitratepercent=10
+set audioencoderoptions=
 set minaudiobitrate=128
 set maxaudiobitrate=256
 set mintotalbitrate=500
@@ -86,7 +87,7 @@ if %bitrate% LEQ %mintotalbitrate% (
     pause && exit
 )
 :: Audio bitrate
-set /A audiobitrate = %bitrate% / %audiobitrateperc%
+set /A audiobitrate = %bitrate% / %audiobitratepercent%
 if %audiobitrate% GEQ %maxaudiobitrate% (set audiobitrate=%maxaudiobitrate%)
 if %audiobitrate% LEQ %minaudiobitrate% (set audiobitrate=%minaudiobitrate%)
 :: Video bitrate
@@ -184,7 +185,7 @@ if %focus% == Original (
 :: Echo settings
 echo %res%p%fps%, preset %preset%
 :: Run ffmpeg
-ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% -b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
+ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
