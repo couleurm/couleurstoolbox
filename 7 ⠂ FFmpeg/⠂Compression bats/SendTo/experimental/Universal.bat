@@ -6,11 +6,13 @@
 :: ClassicNitro (50MB)
 :: Nitro (100MB)
 :: Custom (in kbit, calculate using MB*8*1024)
+set asksize=true
 set size=Discord
 :: Set focus here, options:
 :: Original (keeps original framerate and resolution)
 :: Framerate (tries to keep 60fps)
 :: Resolution (tries to keep high res)
+set askfocus=true
 set focus=Framerate
 :: 
 :: ADVANCED OPTIONS
@@ -26,6 +28,29 @@ set encoderopts=-g 600
 set videofilters=,mpdecimate=max=6
 set /p starttime=Where do you want your clip to start (in seconds): 
 set /p time=How long after the start time do you want it to be: 
+:: Focus and size questions
+:: Disclaimer
+if %askfocus% == true (set askdisclaimer=true)
+else if %asksize% == true (set askdisclaimer=true)
+else (set askdisclaimer=false)
+if %askdisclaimer% == true (echo To disable these questions, set askfocus and asksize to false.)
+:: Focus
+if %askfocus% == true (
+    cls
+    echo What do you want to focus on?
+    echo Framerate - keep FPS as high as possible
+    echo Resolution - keep resolution as high as possible
+    echo Original - try to keep original FPS and resolution
+    set /p focus=
+)
+:: Size
+if %asksize% == true (
+    cls
+    echo What filesize do you want to target?
+    echo Discord - 8MB
+    echo NitroClassic - 50MB
+    echo Nitro - 100MB
+)
 :: Setting target filesize (in kbit)
 if %size% == ClassicNitro (set filesize=409600
 ) else if %size% == Nitro (set filesize=819200
@@ -51,64 +76,77 @@ if %videobitrate% GEQ 5000 (
     set res=1440
     set fps=60
     set preset=medium
+    set qpmin=20
 ) else if %videobitrate% GEQ 3000 (
     set res=1080
     set fps=60
     set preset=slow
+    set qpmin=18
 ) else if %videobitrate% GEQ 2000 (
     if %focus% == Framerate (
         set res=720
         set fps=60
         set preset=slow
+        set qpmin=18
     ) else (
         set res=1080
         set fps=45
         set preset=slow
+        set qpmin=18
     )
 ) else if %videobitrate% GEQ 1400 (
     if %focus% == Framerate (
         set res=720
         set fps=60
         set preset=slower
+        set qpmin=20
     ) else (
         set res=1080
         set fps=30
         set preset=slower
+        set qpmin=18
     )
 ) else if %videobitrate% GEQ 1000 (
     if %focus% == Framerate (
         set res=720
         set fps=60
         set preset=veryslow
+        set qpmin=21
     ) else (
         set res=900
         set fps=30
         set preset=veryslow
+        set qpmin=18
     )
 ) else if %videobitrate% GEQ 700 (
     if %focus% == Framerate (
         set res=540
         set fps=60
         set preset=veryslow
+        set qpmin=20
     ) else (
         set res=720
         set fps=30
         set preset=veryslow
+        set qpmin=19
     )
 ) else if %videobitrate% GEQ 500 (
     if %focus% == Framerate (
         set res=360
         set fps=45
         set preset=veryslow
+        set qpmin=17
     ) else (
         set res=720
         set fps=20
         set preset=veryslow
+        set qpmin=20
     )
 ) else (
     set res=360
     set fps=30
     set preset=veryslow
+    set qpmin=0
 )
 :: Set -vf param
 if %focus% == Original (
@@ -119,7 +157,7 @@ if %focus% == Original (
 :: Echo settings
 echo %res%p%fps%, preset %preset%
 :: Run ffmpeg
-ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -pass 1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -pass 2 -c:a %audioencoder% -b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
+ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% -pass 1 -vsync vfr -an -f null NUL && ffmpeg -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% -pass 2 -c:a %audioencoder% -b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
