@@ -160,9 +160,9 @@ if %videobitrate% GEQ 5000 (
 )
 :: Set -vf param
 if %focus% == Original (
-    set filters=
+    set filters=-vf format=yuv420p
 ) else (
-    set filters=-vf "fps=%fps%,scale='-2':'min(%res%,ih)':flags=lanczos%videofilters%"
+    set filters=-vf "fps=%fps%,scale='-2':'min(%res%,ih)':flags=lanczos,format=yuv420p%videofilters%"
 )
 :: Echo settings
 echo %res%p%fps%, preset %preset%
