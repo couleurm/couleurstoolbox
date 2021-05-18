@@ -59,9 +59,9 @@ set /p starttime=Where do you want your clip to start (in seconds):
 set /p time=How long after the start time do you want it to be: 
 :: Focus and size questions
 :: Disclaimer
+set askdisclaimer=false
 if %askfocus% == true (set askdisclaimer=true)
-else if %asksize% == true (set askdisclaimer=true)
-else (set askdisclaimer=false)
+if %asksize% == true (set askdisclaimer=true)
 if %askdisclaimer% == true (echo To disable these questions, set askfocus and asksize to false.)
 :: Focus
 if %askfocus% == true (
