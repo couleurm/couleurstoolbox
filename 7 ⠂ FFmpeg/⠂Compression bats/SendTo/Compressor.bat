@@ -205,7 +205,7 @@ if %videoencoder% == libx264 (
 :: Echo settings
 echo %res%p%fps%, preset %preset%
 :: Run ffmpeg
-ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -y %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).%container%"
+ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -y %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).%container%"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
