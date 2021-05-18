@@ -33,9 +33,11 @@ set minaudiobitrate=128
 set maxaudiobitrate=256
 set mintotalbitrate=500
 set bitratetargetpercent=100
+set container=mp4
 set videoencoder=libx264
 set forcepreset=no
 set twopasscommand=-pass 
+set presetcommand=-preset 
 set encoderopts=-g 600
 set videofilters=,mpdecimate=max=6
 :: Bitrate targets
@@ -59,9 +61,9 @@ set /p starttime=Where do you want your clip to start (in seconds):
 set /p time=How long after the start time do you want it to be: 
 :: Focus and size questions
 :: Disclaimer
+set askdisclaimer=false
 if %askfocus% == true (set askdisclaimer=true)
-else if %asksize% == true (set askdisclaimer=true)
-else (set askdisclaimer=false)
+if %asksize% == true (set askdisclaimer=true)
 if %askdisclaimer% == true (echo To disable these questions, set askfocus and asksize to false.)
 :: Focus
 if %askfocus% == true (
@@ -192,14 +194,18 @@ if %forcepreset% == no (
 )
 :: Set -vf param
 if %focus% == Original (
-    set filters=-vf format=yuv420p
+    set filters=-vf format=yuv420p%videofilters%
 ) else (
     set filters=-vf "fps=%fps%,scale='-2':'min(%res%,ih)':flags=lanczos,format=yuv420p%videofilters%"
+)
+:: Only do -x264-params if it is x264
+if %videoencoder% == libx264 (
+    set qpmincmd=-x264-params qpmin=%qpmin%
 )
 :: Echo settings
 echo %res%p%fps%, preset %preset%
 :: Run ffmpeg
-ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -y %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k -x264-params qpmin=%qpmin% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).mp4"
+ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -y %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% -preset %preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).%container%"
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
