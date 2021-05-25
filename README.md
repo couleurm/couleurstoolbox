@@ -20,14 +20,14 @@ What it does:
 - Clones my repository on your Desktop
 (There's a bat in the GitHub folder that you can use to update the toolbox, it'll fetch the new commits with Git)
 
-# 1. [(Re)install windows](https://github.com/couleurm/couleurstoolbox/tree/main/1%20%E2%A0%82(Re)install%20Windows)
+# 1. [(Re)install windows](https://github.com/couleurm/couleurstoolbox/tree/main/1%20(Re)install%20Windows)
 
   - Link to Microsoft's official download page
   - Link to a little handy tutorial I made to get an .ISO instead of an upgrade tool (s/o fr33thy)
   - Link to Rufus.ie and NTLite.com
   - Windows link to activate Windows
 
-# 2. [Programs](https://github.com/couleurm/couleurstoolbox/tree/main/2%20%E2%A0%82%20Programs)
+# 2. [Programs](https://github.com/couleurm/couleurstoolbox/tree/main/2%20%20Programs)
 
 A bunch of bats that will let you atomatically download & install some programs such as: 
 Brave, Chrome, Discord, Lightshot, N++, OBS 25.0.8, SearchEverything, Steam, Telegram, VLC & Anydesk (that list will get longer as time goes)
@@ -45,7 +45,7 @@ Brave, Chrome, Discord, Lightshot, N++, OBS 25.0.8, SearchEverything, Steam, Tel
         - VPNs
         - Aesthetic focused
 
-# 3. [Windows 10 tweaks](https://github.com/couleurm/couleurstoolbox/tree/main/3%20%E2%A0%82Windows%20Tweaks)
+# 3. [Windows tweaks](https://github.com/couleurm/couleurstoolbox/tree/main/3%20Windows%20Tweaks)
 
 - **Quality of life fixes**
     - Scripts to uninstall Movies & TV and install VLC
@@ -81,25 +81,25 @@ MarkC's .regs to fix aceleration
     - Windows appearance
 :::
 
-# 4. [Nvidia Drivers](https://github.com/couleurm/couleurstoolbox/tree/main/4%20%E2%A0%82Nvidia%20Drivers)
+# 4. [Nvidia Drivers](https://github.com/couleurm/couleurstoolbox/tree/main/4%20Nvidia%20Drivers)
 
 - Links to NVCleanstall and DDU's websites to get latest.
 - VCleanstall 1.9.0 & DDU v18.3.9
 - Link to ChrisTitusTech's tutorial on these two programs
-# 5.  [OBS](https://github.com/couleurm/couleurstoolbox/tree/main/5%20%E2%A0%82OBS)
+# 5.  [OBS](https://github.com/couleurm/couleurstoolbox/tree/main/5%20OBS)
 
 Profiles (SOON)
 Super dark & Flat Dark themes (with `.lnk` to where to where you need to drag them in)
 Automatic download & install of OBS 25.0.8
 Link to OBSproject's latest GitHub releases
-# 6.  [LunarClient (Minecraft)](https://github.com/couleurm/couleurstoolbox/tree/main/6%20%E2%A0%82LunarClient) 
+# 6.  [LunarClient (Minecraft)](https://github.com/couleurm/couleurstoolbox/tree/main/6%20LunarClient) 
 
 - `.lnk` to download LC
 - #optimize-lunar-client channel link on [CTT](https://dsc.gg/CTT)
 - `.lnk` to resourcepacks, .lunarclient
 - My ov3rlay bundle & bunch of resource pack folder links.
 . 
-# 7. [FFmpeg](https://github.com/couleurm/couleurstoolbox/tree/main/7%20%E2%A0%82%20FFmpeg)
+# 7. [FFmpeg](https://github.com/couleurm/couleurstoolbox/tree/main/7%20%20FFmpeg)
 
 - Fake upscale bats for Nvenc/AMF/x264 encoders
         - Fake upscale to 4K with SendTo method, using XBR & Lanczos scale filters
