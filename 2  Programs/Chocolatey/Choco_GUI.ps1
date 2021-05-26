@@ -1,5 +1,5 @@
 ﻿Write-Host
-Write-Host Installing Chocolatey, ignore the following yellow lines if you have it already installed.
+Write-Host Installing Chocolatey. Ignore the following yellow lines if you have it already installed.
 Write-Host
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 #Installs Chocolatey
