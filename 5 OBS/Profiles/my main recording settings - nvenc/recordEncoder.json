@@ -1,0 +1,8 @@
+{
+    "bf": 0,
+    "cqp": 14,
+    "preset": "hp",
+    "profile": "baseline",
+    "psycho_aq": false,
+    "rate_control": "CQP"
+}
