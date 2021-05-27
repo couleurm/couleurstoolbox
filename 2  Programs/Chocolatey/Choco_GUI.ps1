@@ -141,7 +141,8 @@ $DataObject = ConvertFrom-Json @"
         {"name" : "EarTrumpet","IsChecked" : false,"icon":"https://softati.com/wp-content/uploads/2019/03/EarTrumpet-Icon-50x50.png"},
         {"name" : "VSCode","IsChecked" : false,"icon":"https://iseif.dev/wp-content/uploads/2019/06/vscode-logo.png"},
         {"name" : "ShareX","IsChecked" : false,"icon":"https://duckduckgo.com/i/cb4de35d.png"},
-        {"name" : "TranslucentTB","IsChecked" : false,"icon":"https://raw.githubusercontent.com/TranslucentTB/TranslucentTB/release/TranslucentTB/TTB_color.ico"}
+        {"name" : "TranslucentTB","IsChecked" : false,"icon":"https://raw.githubusercontent.com/TranslucentTB/TranslucentTB/release/TranslucentTB/TTB_color.ico"},
+	{"name" : "Spotify","IsChecked" : false,"icon":"https://img.talkandroid.com/uploads/2016/01/spotify-app-logo.png"}
         ],
         "resultString" : ""
 }
