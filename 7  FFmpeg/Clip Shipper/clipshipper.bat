@@ -17,8 +17,7 @@ set enablecpuwarning=yes
 :: ADVANCED OPTIONS
 :: Be careful, only change them if you know what they do!
 ::
-set audioencoder=libopus
-set audioencoderopts=-b:a 320k
+set audioencoderopts=-c:a libopus -b:a 320k
 set container=mkv
 set forcepreset=no
 set forcequality=no
@@ -58,11 +57,13 @@ if %forcedencoderopts% == no (
     if %hwaccel% == cpu (
         if %codec% == H264 (
             set encoderopts=-c:v libx264
+            set encpreset=slow
             set qualityarg=-crf
             set quality=15
         )
         if %codec% == HEVC (
             set encoderopts=-c:v libx265
+            set encpreset=medium
             set qualityarg=-crf
             set quality=19
         )
@@ -71,11 +72,13 @@ if %forcedencoderopts% == no (
         set hwaccelarg=-hwaccel cuda
         if %codec% == H264 (
             set encoderopts=-c:v h264_nvenc -rc constqp
+            set encpreset=p7
             set qualityarg=-qp
             set quality=17
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_nvenc -rc constqp
+            set encpreset=p7
             set qualityarg=-qp
             set quality=21
         )
@@ -84,11 +87,13 @@ if %forcedencoderopts% == no (
         set hwaccelarg=-hwaccel d3d11va
         if %codec% == H264 (
             set encoderopts=-c:v h264_amf
+            set encpreset=quality
             set quality=16
             set amd=yes
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_amf
+            set encpreset=quality
             set quality=20
             set amd=yes
         )
@@ -97,12 +102,14 @@ if %forcedencoderopts% == no (
         set hwaccelarg=-hwaccel d3d11va
         if %codec% == H264 (
             set encoderopts=-c:v h264_qsv
-            set qualityarg=-global_quality
+            set encpreset=veryslow
+            set qualityarg=-global_quality:v
             set quality=18
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_qsv
-            set qualityarg=-global_quality
+            set encpreset=veryslow
+            set qualityarg=-global_quality:v
             set quality=22
         )
     )
@@ -113,12 +120,15 @@ if %forcedencoderopts% == no (
     set encoderarg=%forcedencoderopts%
     set recreatecommand=no
 )
+if NOT %forcepreset% == no (
+    set encpreset=%forcepreset%
+)
 set globaloptions=-g 900
 if %recreatecommand% == yes (
     if %amd%1 == yes1 (
-        set encoderarg=!encoderopts! -qp_i %quality% -qp_p %quality% -qp_b %quality% %globaloptions%
+        set encoderarg=%encoderopts% -qp_i %quality% -qp_p %quality% -qp_b %quality% %globaloptions% -quality %encpreset%
     ) else (
-        set encoderarg=%encoderopts% %qualityarg% %quality% %globaloptions%
+        set encoderarg=%encoderopts% %qualityarg% %quality% %globaloptions% %presetcommand% %encpreset%
     )
 )
 :: FFmpeg command creation
@@ -165,5 +175,5 @@ if %fadeaoutputname% == 0:a:0 (
 )
 set mapvideo=[%upscaleoutputname%]
 :: Command
-ffmpeg -hide_banner %hwaccelarg% -ss %starttime% -t %time% -i %1 %ainput% %encoderarg% -c:a %audioencoder% %audioencoderopts% -filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" -map "%mapaudio%" -map "%mapvideo%" -vsync vfr -movflags +faststart "%~dpn1 (shipped).%container%"
+ffmpeg -hide_banner %hwaccelarg% -ss %starttime% -t %time% -i %1 %ainput% %encoderarg% -filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" -map "%mapaudio%" -map "%mapvideo%" %audioencoderopts% -vsync vfr -movflags +faststart "%~dpn1 (shipped).%container%"
 pause
