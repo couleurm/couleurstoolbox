@@ -36,12 +36,12 @@ if %1check == check (
 :: Questions
 set /p audiofile=What audio file should be added? "no" to keep original audio: 
 if NOT %audiofile% == no (
-    set /p audiostarttime=Where should the audio file start?: 
+    set /p audiostarttime=Where should the audio file start? (in seconds): 
 )
-set /p starttime=Where do you want your clip to start in seconds: 
-set /p time=How long after the start time do you want it to be: 
-set /p upscaleto4k=Do you want to upscale to 4K? "yes" or "no", default "yes": 
-set /p fadetime=How long do you want the clip to fade in and out in seconds? default 0: 
+set /p starttime=Where do you want your clip to start (in seconds): 
+set /p time=How long should the clip be (in seconds): 
+set /p upscaleto4k=Do you want to upscale to 4K? (yes or no): 
+set /p fadetime=How long do you want the clip to fade in and out? (in seconds, 0=off): 
 :: Encoder options
 if %forcedencoderopts% == no (
     :: Choosing encoder
@@ -111,7 +111,6 @@ if %recreatecommand% == yes (
         set encoderarg=%encoderopts% %qualityarg% %quality% %globaloptions%
     )
 )
-echo %encoderarg%
 :: FFmpeg command creation
 :: Input filters
 set filterinput=[0:v]format=yuv420p[fadeinput]
