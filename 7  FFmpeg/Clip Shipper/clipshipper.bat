@@ -120,7 +120,7 @@ if %audiofile% == no (
     set filteramix=
     set amixoutputname=0:a:0
 ) else (
-    set filteramix=;[0:a:0][1:a:0]amix=tracks=2[mixedaudio]
+    set filteramix=;[0:a:0][1:a:0]amix=inputs=2[mixedaudio]
     set amixoutputname=mixedaudio
 )
 :: Fading
@@ -156,5 +156,5 @@ if %fadeaoutputname% == 0:a:0 (
 )
 set mapvideo=[%upscaleoutputname%]
 :: Command
-ffmpeg -hide_banner %hwaccelarg% -ss %starttime% -t %time% -i %1 %ainput% %encoderarg% -filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" -map "%mapaudio%" -map "%mapvideo%" -vsync vfr -movflags +faststart "%~dpn1 (shipped).%container%"
+ffmpeg -hide_banner %hwaccelarg% -ss %starttime% -t %time% -i %1 %ainput% %encoderarg% -c:a %audioencoder% %audioencoderopts% -filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" -map "%mapaudio%" -map "%mapvideo%" -vsync vfr -movflags +faststart "%~dpn1 (shipped).%container%"
 pause
