@@ -34,14 +34,15 @@ if %1check == check (
     exit
 )
 :: Questions
-set /p audiofile=What audio file should be added? "no" to keep original audio: 
+echo All times are in seconds
+set /p audiofile=What audio file should be added? no to keep original audio: 
 if NOT %audiofile% == no (
-    set /p audiostarttime=Where should the audio file start? (in seconds): 
+    set /p audiostarttime=Where do you want the audio file start: 
 )
-set /p starttime=Where do you want your clip to start (in seconds): 
-set /p time=How long should the clip be (in seconds): 
-set /p upscaleto4k=Do you want to upscale to 4K? (yes or no): 
-set /p fadetime=How long do you want the clip to fade in and out? (in seconds, 0=off): 
+set /p starttime=Where do you want your clip to start: 
+set /p time=How long should the clip be: 
+set /p upscaleto4k=Do you want to upscale to 4K? yes or no: 
+set /p fadetime=How long do you want the clip to fade in and out? 0 = disabled: 
 :: Encoder options
 if %forcedencoderopts% == no (
     :: Choosing encoder
