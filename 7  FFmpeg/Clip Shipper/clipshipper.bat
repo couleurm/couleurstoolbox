@@ -37,7 +37,8 @@ if %1check == check (
 echo All times are in seconds
 set /p audiofile=What audio file should be added? no to keep original audio: 
 if NOT %audiofile% == no (
-    set /p audiostarttime=Where do you want the audio file start: 
+    set /p audiostarttime=Where do you want the audio file to start: 
+    set /p weights=How loud do you want the music to be? 0-200, 100 is input clip volume: 
 )
 set /p starttime=Where do you want your clip to start: 
 set /p time=How long should the clip be: 
@@ -120,7 +121,7 @@ if %audiofile% == no (
     set filteramix=
     set amixoutputname=0:a:0
 ) else (
-    set filteramix=;[0:a:0][1:a:0]amix=inputs=2[mixedaudio]
+    set filteramix=;[0:a:0][1:a:0]amix=inputs=2:duration=shortest:normalize=1:weights='100 %weights%'[mixedaudio]
     set amixoutputname=mixedaudio
 )
 :: Fading
