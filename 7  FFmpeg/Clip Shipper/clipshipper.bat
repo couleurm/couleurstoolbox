@@ -33,6 +33,13 @@ if %1check == check (
     pause
     exit
 )
+:: Questions
+set /p audiofile=What audio file should be added? no to keep original audio: 
+set /p audiostarttime=Where should the audio file start?: 
+set /p starttime=Where do you want your clip to start in seconds: 
+set /p time=How long after the start time do you want it to be: 
+set /p upscaleto4k=Do you want to upscale to 4K? yes/no, default yes: 
+set /p fadetime=How long do you want the clip to fade in and out in seconds? default 0: 
 :: Encoder options
 if %forcedencoderopts% == no (
     :: Encoder-specific options
@@ -89,8 +96,36 @@ if %forcedencoderopts% == no (
     :: Global options
     set globaloptions=-g 900
     if %amd% == yes (
-        set encoderopts=%encoderopts% -qp_i %quality% -qp_p %quality% -qp_b %quality%
+        set encoderopts=%encoderopts% -qp_i %quality% -qp_p %quality% -qp_b %quality% %globaloptions%
     ) else (
-        set encoderopts=%encoderopts% %qualityarg% %quality%
+        set encoderopts=%encoderopts% %qualityarg% %quality% %globaloptions%
     )
+) else (
+    set encoderopts=%forcedencoderopts%
 )
+echo encoptsgood
+:: FFmpeg command creation
+:: Input filters
+set filterinput=[0:v]format=yuv420p[fadeinput];
+:: Upscaling to 4K
+if %upscaleto4k% == yes (
+    set filterupscale=[scaleinput]scale=-2:2160:flags=lanczos[upscaled];
+) else (
+    set filterupscale=[scaleinput][upscaled];
+)
+:: Fading
+set /A endfadestarttime=%time%-%fadetime%
+set filterfade=[mixedaudio]afade=t=in:st=0:d=%fadetime%,afade=t=out:st=%endfadestarttime%:d=%fadetime%[finalaudio];[fadeinput]fade=t=in:st=0:d=%fadetime%,fade=t=out:st=%endfadestarttime%:d=%fadetime%[scaleinput];
+:: Audio mix
+if %audiofile% == no (
+    set filteramix=[amixinput][mixedaudio];
+) else (
+    set filteramix=[0:a][1:a]amix=tracks=2[mixedaudio];
+)
+:: Audio input
+if %audiofile% == no (
+) else (
+    set ainput=-ss %audiostarttime% -t %time% -i %audiofile%
+)
+:: Command
+echo ffmpeg %hwaccelarg% -ss %starttime% -t %time% %ainput% %encoderopts% -filter_complex '%filterinput%%filteramix%%filterfade%%filterupscale%' -map "[upscaled]" -map "[finalaudio]" -vsync vfr -movflags +faststart "%~dpn1 (compressed).%container%"
