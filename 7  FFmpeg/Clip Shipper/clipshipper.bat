@@ -12,6 +12,7 @@
 ::
 set hwaccel=cpu
 set codec=H264
+set enablecpuwarning=yes
 ::
 :: ADVANCED OPTIONS
 :: Be careful, only change them if you know what they do!
@@ -32,6 +33,13 @@ if %1check == check (
     echo After that, right click on your video, drag over to Send To and click on this bat there.
     pause
     exit
+)
+:: CPU check
+if %hwaccel% == cpu (
+    if %enablecpuwarning% == yes (
+        echo Warning: this script is using your CPU by default. Please open it and change hardware acceleration, or set enablecpuwarning to no.
+        pause
+    )
 )
 :: Questions
 echo All times are in seconds
