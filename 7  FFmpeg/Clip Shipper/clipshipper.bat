@@ -35,7 +35,9 @@ if %1check == check (
 )
 :: Questions
 set /p audiofile=What audio file should be added? "no" to keep original audio: 
-set /p audiostarttime=Where should the audio file start?: 
+if NOT %audiofile% == no (
+    set /p audiostarttime=Where should the audio file start?: 
+)
 set /p starttime=Where do you want your clip to start in seconds: 
 set /p time=How long after the start time do you want it to be: 
 set /p upscaleto4k=Do you want to upscale to 4K? "yes" or "no", default "yes": 
@@ -112,21 +114,33 @@ if %recreatecommand% == yes (
 echo %encoderarg%
 :: FFmpeg command creation
 :: Input filters
-set filterinput=[0:v]format=yuv420p[fadeinput];
-:: Upscaling to 4K
-if %upscaleto4k% == yes (
-    set filterupscale=[scaleinput]scale=-2:2160:flags=lanczos[finalvideo];
+set filterinput=[0:v]format=yuv420p[fadeinput]
+:: Audio mix
+if %audiofile% == no (
+    set filteramix=
+    set amixoutputname=0:a:0
 ) else (
-    set filterupscale=[scaleinput][finalvideo];
+    set filteramix=;[0:a:0][1:a:0]amix=tracks=2[mixedaudio]
+    set amixoutputname=mixedaudio
 )
 :: Fading
 set /A endfadestarttime=%time%-%fadetime%
-set filterfade=[mixedaudio]afade=t=in:st=0:d=%fadetime%,afade=t=out:st=%endfadestarttime%:d=%fadetime%[finalaudio];[fadeinput]fade=t=in:st=0:d=%fadetime%,fade=t=out:st=%endfadestarttime%:d=%fadetime%[scaleinput];
-:: Audio mix
-if %audiofile% == no (
-    set filteramix="[amixinput][mixedaudio];"
+if %fadetime% == 0 (
+    set filterfade=
+    set fadeaoutputname=%amixoutputname%
+    set fadevoutputname=fadeinput
 ) else (
-    set filteramix=[0:a:0][1:a:0]amix=tracks=2[mixedaudio];
+    set filterfade=;[%amixoutputname%]afade=t=in:st=0:d=%fadetime%,afade=t=out:st=%endfadestarttime%:d=%fadetime%[finalaudio];[fadeinput]fade=t=in:st=0:d=%fadetime%,fade=t=out:st=%endfadestarttime%:d=%fadetime%[scaleinput]
+    set fadeaoutputname=finalaudio
+    set fadevoutputname=scaleinput
+)
+:: Upscaling to 4K
+if %upscaleto4k% == yes (
+    set filterupscale=;[%fadevoutputname%]scale=-2:2160:flags=lanczos[finalvideo]
+    set upscaleoutputname=finalvideo
+) else (
+    set filterupscale=
+    set upscaleoutputname=%fadevoutputname%
 )
 :: Audio input
 if %audiofile% == no (
@@ -134,5 +148,13 @@ if %audiofile% == no (
 ) else (
     set ainput=-ss %audiostarttime% -t %time% -i %audiofile%
 )
+:: Mapping
+if %fadeaoutputname% == 0:a:0 (
+    set mapaudio=0:a:0
+) else (
+    set mapaudio=[%fadeaoutputname%]
+)
+set mapvideo=[%upscaleoutputname%]
 :: Command
-echo ffmpeg %hwaccelarg% -ss %starttime% -t %time% -i %1 %ainput% %encoderarg% -filter_complex '%filterinput%%filteramix%%filterfade%%filterupscale%' -map "[finalvideo]" -map "[finalaudio]" -vsync vfr -movflags +faststart "%~dpn1 (compressed).%container%"
+ffmpeg -hide_banner %hwaccelarg% -ss %starttime% -t %time% -i %1 %ainput% %encoderarg% -filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" -map "%mapaudio%" -map "%mapvideo%" -vsync vfr -movflags +faststart "%~dpn1 (shipped).%container%"
+pause
