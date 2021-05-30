@@ -174,6 +174,30 @@ if %fadeaoutputname% == 0:a:0 (
     set mapaudio=[%fadeaoutputname%]
 )
 set mapvideo=[%upscaleoutputname%]
-:: Command
-ffmpeg -hide_banner %hwaccelarg% -ss %starttime% -t %time% -i %1 %ainput% %encoderarg% -filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" -map "%mapaudio%" -map "%mapvideo%" %audioencoderopts% -vsync vfr -movflags +faststart "%~dpn1 (shipped).%container%"
+:: Running
+echo\
+echo Encoding...
+echo\
+color 06
+:: FFmpeg
+ffmpeg -loglevel warning -stats %hwaccelarg% ^
+-ss %starttime% -t %time% -i %1 %ainput% ^
+%encoderarg% %audioencoderopts% ^
+-filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" ^
+-map "%mapaudio%" -map "%mapvideo%" ^
+-vsync vfr -movflags +faststart ^
+"%~dpn1 (shipped).%container%"
+:: General options
+:: Inputs
+:: Encoding options
+:: Filtering
+:: Mapping
+:: Container options
+:: Output filename
+::
+:: End
+echo\
+echo Done!
+echo\
+color 0A
 pause
