@@ -50,6 +50,7 @@ if NOT %audiofile% == no (
 )
 set /p starttime=Where do you want your clip to start: 
 set /p time=How long should the clip be: 
+set /p short=Should the clip be cropped to YouTube shorts size? yes or no: 
 set /p upscaleto4k=Do you want to upscale to 4K? yes or no: 
 set /p fadeintime=How long do you want the clip to fade in? 0 = disabled: 
 set /p fadeouttime=How long do you want the clip to fade out? 0 = disabled: 
@@ -136,7 +137,7 @@ if %recreatecommand% == yes (
 :: FFmpeg command creation
 :: Input filters
 set filterinput=[0:v]format=yuv420p[input]
-set fadeinput=input
+set filterchaininput=input
 :: Audio mix
 if %audiofile% == no (
     set filteramix=
@@ -144,6 +145,14 @@ if %audiofile% == no (
 ) else (
     set filteramix=;[0:a:0][1:a:0]amix=inputs=2:duration=shortest:normalize=1:weights='100 %weights%'[mixedaudio]
     set amixoutputname=mixedaudio
+)
+:: Cropping to Shorts size
+if %short%0 == yes0 (
+    set filtershorts=;[%filterchaininput%]crop='in_h*0.5625'[cropped]
+    set shortsoutputname=cropped
+) else (
+    set filtershorts=
+    set shortsoutputname=%filterchaininput%
 )
 :: Fading
 :: Directions
@@ -168,17 +177,17 @@ if NOT %fadeouttime%0 == 00 (set fadeenabled=1)
 if NOT %fadeintime%0 == 00 (set fadeenabled=1)
 :: Actual filter
 if %fadeenabled%0 == 10 (
-    set filterfade=;[%fadeinput%]%fadeinvfilter%%fadefseparator%%fadeoutvfilter%[fadedvideo];[%amixoutputname%]%fadeinafilter%%fadefseparator%%fadeoutafilter%[fadedaudio]
+    set filterfade=;[%shortsoutputname%]%fadeinvfilter%%fadefseparator%%fadeoutvfilter%[fadedvideo];[%amixoutputname%]%fadeinafilter%%fadefseparator%%fadeoutafilter%[fadedaudio]
     set fadeaoutputname=fadedaudio
     set fadevoutputname=fadedvideo
 ) else (
     set filterfade=
     set fadeaoutputname=%amixoutputname%
-    set fadevoutputname=%fadeinput%
+    set fadevoutputname=%shortsoutputname%
 )
 :: Upscaling to 4K
 if %upscaleto4k% == yes (
-    set filterupscale=;[%fadevoutputname%]scale=-2:2160:flags=lanczos[finalvideo]
+    set filterupscale=;[%fadevoutputname%]scale=-2:2160:flags=neighbor[finalvideo]
     set upscaleoutputname=finalvideo
 ) else (
     set filterupscale=
@@ -206,7 +215,7 @@ color 06
 ffmpeg -loglevel warning -stats %hwaccelarg% ^
 -ss %starttime% -t %time% -i %1 %ainput% ^
 %encoderarg% %audioencoderopts% ^
--filter_complex "%filterinput%%filteramix%%filterfade%%filterupscale%" ^
+-filter_complex "%filterinput%%filteramix%%filtershorts%%filterfade%%filterupscale%" ^
 -map "%mapaudio%" -map "%mapvideo%" ^
 -vsync vfr -movflags +faststart ^
 "%~dpn1 (shipped).%container%"
