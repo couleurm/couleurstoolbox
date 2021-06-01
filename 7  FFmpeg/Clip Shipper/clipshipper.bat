@@ -11,7 +11,8 @@
 :: H264
 ::
 set hwaccel=cpu
-set codec=H264
+set codec=HEVC
+set cpupreset=veryfast
 set enablecpuwarning=yes
 ::
 :: ADVANCED OPTIONS
@@ -60,15 +61,15 @@ if %forcedencoderopts% == no (
     if %hwaccel% == cpu (
         if %codec% == H264 (
             set encoderopts=-c:v libx264
-            set encpreset=slow
+            set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=15
+            set quality=16
         )
         if %codec% == HEVC (
             set encoderopts=-c:v libx265
-            set encpreset=medium
+            set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=19
+            set quality=18
         )
     )
     if %hwaccel% == NVIDIA (
@@ -77,7 +78,7 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v h264_nvenc -rc constqp
             set encpreset=p7
             set qualityarg=-qp
-            set quality=17
+            set quality=18
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_nvenc -rc constqp
@@ -97,7 +98,7 @@ if %forcedencoderopts% == no (
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_amf
             set encpreset=quality
-            set quality=20
+            set quality=19
             set amd=yes
         )
     )
@@ -126,7 +127,7 @@ if %forcedencoderopts% == no (
 if NOT %forcepreset% == no (
     set encpreset=%forcepreset%
 )
-set globaloptions=-g 900
+set globaloptions=-g 600
 if %recreatecommand% == yes (
     if %amd%1 == yes1 (
         set encoderarg=%encoderopts% -qp_i %quality% -qp_p %quality% -qp_b %quality% %globaloptions% -quality %encpreset%
@@ -143,7 +144,7 @@ if %audiofile% == no (
     set filteramix=
     set amixoutputname=0:a:0
 ) else (
-    set filteramix=;[0:a:0][1:a:0]amix=inputs=2:duration=shortest:normalize=1:weights='100 %weights%'[mixedaudio]
+    set filteramix=;[0:a:0][1:a:0]amix=inputs=2:duration=longest:normalize=1:weights='100 %weights%'[mixedaudio]
     set amixoutputname=mixedaudio
 )
 :: Cropping to Shorts size
