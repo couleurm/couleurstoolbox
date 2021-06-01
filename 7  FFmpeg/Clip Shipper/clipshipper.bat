@@ -25,6 +25,7 @@ set presetcommand=-preset
 set forcedencoderopts=no
 set customvideofilters=,mpdecimate=max=6
 :: DON'T TOUCH ANYTHING BEYOND THIS POINT
+color 0f
 :: Input check
 if %1check == check (
     echo ERROR: no input file
@@ -50,7 +51,8 @@ if NOT %audiofile% == no (
 set /p starttime=Where do you want your clip to start: 
 set /p time=How long should the clip be: 
 set /p upscaleto4k=Do you want to upscale to 4K? yes or no: 
-set /p fadetime=How long do you want the clip to fade in and out? 0 = disabled: 
+set /p fadeintime=How long do you want the clip to fade in? 0 = disabled: 
+set /p fadeouttime=How long do you want the clip to fade out? 0 = disabled: 
 :: Encoder options
 if %forcedencoderopts% == no (
     :: Choosing encoder
@@ -133,7 +135,8 @@ if %recreatecommand% == yes (
 )
 :: FFmpeg command creation
 :: Input filters
-set filterinput=[0:v]format=yuv420p[fadeinput]
+set filterinput=[0:v]format=yuv420p[input]
+set fadeinput=input
 :: Audio mix
 if %audiofile% == no (
     set filteramix=
@@ -143,15 +146,35 @@ if %audiofile% == no (
     set amixoutputname=mixedaudio
 )
 :: Fading
-set /A endfadestarttime=%time%-%fadetime%
-if %fadetime% == 0 (
+:: Directions
+set /A endfadestarttime=%time%-%fadeouttime%
+if NOT %fadeintime%0 == 00 (
+    set fadeinafilter=afade=t=in:st=0:d=%fadeintime%
+    set fadeinvfilter=fade=t=in:st=0:d=%fadeintime%
+)
+if NOT %fadeouttime%0 == 00 (
+    set fadeoutafilter=afade=t=out:st=%endfadestarttime%:d=%fadeouttime%
+    set fadeoutvfilter=fade=t=out:st=%endfadestarttime%:d=%fadeouttime%
+)
+:: Final filter
+:: Separates fade filters with , if both are enabled
+if NOT %fadeouttime%0 == 00 (
+    if NOT %fadeintime%0 == 00 (
+        set fadefseparator=,
+    )
+)
+:: Choosing if fading is enabled or not
+if NOT %fadeouttime%0 == 00 (set fadeenabled=1)
+if NOT %fadeintime%0 == 00 (set fadeenabled=1)
+:: Actual filter
+if %fadeenabled%0 == 10 (
+    set filterfade=;[%fadeinput%]%fadeinvfilter%%fadefseparator%%fadeoutvfilter%[fadedvideo];[%amixoutputname%]%fadeinafilter%%fadefseparator%%fadeoutafilter%[fadedaudio]
+    set fadeaoutputname=fadedaudio
+    set fadevoutputname=fadedvideo
+) else (
     set filterfade=
     set fadeaoutputname=%amixoutputname%
-    set fadevoutputname=fadeinput
-) else (
-    set filterfade=;[%amixoutputname%]afade=t=in:st=0:d=%fadetime%,afade=t=out:st=%endfadestarttime%:d=%fadetime%[finalaudio];[fadeinput]fade=t=in:st=0:d=%fadetime%,fade=t=out:st=%endfadestarttime%:d=%fadetime%[scaleinput]
-    set fadeaoutputname=finalaudio
-    set fadevoutputname=scaleinput
+    set fadevoutputname=%fadeinput%
 )
 :: Upscaling to 4K
 if %upscaleto4k% == yes (
@@ -187,14 +210,6 @@ ffmpeg -loglevel warning -stats %hwaccelarg% ^
 -map "%mapaudio%" -map "%mapvideo%" ^
 -vsync vfr -movflags +faststart ^
 "%~dpn1 (shipped).%container%"
-:: General options
-:: Inputs
-:: Encoding options
-:: Filtering
-:: Mapping
-:: Container options
-:: Output filename
-::
 :: End
 echo\
 echo Done!
