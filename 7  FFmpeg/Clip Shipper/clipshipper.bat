@@ -19,12 +19,11 @@ set enablecpuwarning=yes
 :: Be careful, only change them if you know what they do!
 ::
 set audioencoderopts=-c:a libopus -b:a 320k
-set container=mkv
+set container=mp4
 set forcepreset=no
 set forcequality=no
 set presetcommand=-preset 
 set forcedencoderopts=no
-set customvideofilters=,mpdecimate=max=6
 :: DON'T TOUCH ANYTHING BEYOND THIS POINT
 color 0f
 :: Input check
