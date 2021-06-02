@@ -48,8 +48,8 @@ if NOT %audiofile% == no (
     set /p audiostarttime=Where do you want the audio file to start: 
     set /p weights=How loud do you want the music to be? 0-200, 100 is input clip volume: 
 )
-set /p starttime=Where do you want your clip to start: 
-set /p time=How long should the clip be: 
+set /p starttime=Where do you want your clip to start (in seconds): 
+set /p time=How long after the start time do you want it to be: 
 set /p short=Should the clip be cropped to YouTube shorts size? yes or no: 
 set /p upscaleto4k=Do you want to upscale to 4K? yes or no: 
 set /p fadeintime=How long do you want the clip to fade in? 0 = disabled: 
@@ -62,13 +62,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v libx264
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=16
+            set quality=10
         )
         if %codec% == HEVC (
             set encoderopts=-c:v libx265
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=18
+            set quality=14
         )
     )
     if %hwaccel% == NVIDIA (
@@ -77,13 +77,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v h264_nvenc -rc constqp
             set encpreset=p7
             set qualityarg=-qp
-            set quality=18
+            set quality=15
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_nvenc -rc constqp
             set encpreset=p7
             set qualityarg=-qp
-            set quality=21
+            set quality=18
         )
     )
     if %hwaccel% == AMD (
@@ -91,13 +91,13 @@ if %forcedencoderopts% == no (
         if %codec% == H264 (
             set encoderopts=-c:v h264_amf
             set encpreset=quality
-            set quality=16
+            set quality=12
             set amd=yes
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_amf
             set encpreset=quality
-            set quality=19
+            set quality=16
             set amd=yes
         )
     )
@@ -107,13 +107,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v h264_qsv
             set encpreset=veryslow
             set qualityarg=-global_quality:v
-            set quality=18
+            set quality=15
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_qsv
             set encpreset=veryslow
             set qualityarg=-global_quality:v
-            set quality=22
+            set quality=18
         )
     )
     :: Fuck you batch
@@ -126,7 +126,6 @@ if %forcedencoderopts% == no (
 if NOT %forcepreset% == no (
     set encpreset=%forcepreset%
 )
-set globaloptions=-g 600
 if %recreatecommand% == yes (
     if %amd%1 == yes1 (
         set encoderarg=%encoderopts% -qp_i %quality% -qp_p %quality% -qp_b %quality% %globaloptions% -quality %encpreset%

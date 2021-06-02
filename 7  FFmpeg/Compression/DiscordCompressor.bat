@@ -49,6 +49,7 @@ set /A target5 = 10 * %bitratetargetpercent%
 set /A target6 = 7 * %bitratetargetpercent%
 set /A target7 = 5 * %bitratetargetpercent%
 :: Input check
+color 0f
 if %1check == check (
     echo ERROR: no input file
     echo Drag this .bat into the SendTo folder - press Windows + R and type in shell:sendto
@@ -202,10 +203,31 @@ if %focus% == Original (
 if %videoencoder% == libx264 (
     set qpmincmd=-x264-params qpmin=%qpmin%
 )
-:: Echo settings
-echo %res%p%fps%, preset %preset%
-:: Run ffmpeg
-ffmpeg %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%1 -vsync vfr -an -f null NUL && ffmpeg -y %hwaccel% -ss %starttime% -t %time% -i %1 %filters% -c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%2 -c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k -vsync vfr -movflags +faststart "%~dpn1 (compressed).%container%"
+:: Running
+echo\
+echo Encoding...
+echo\
+color 06
+:: FFmpeg
+ffmpeg -loglevel warning -stats %hwaccel% ^
+-ss %starttime% -t %time% -i %1 ^
+%filters% ^
+-c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%1 ^
+-vsync vfr -an -f null NUL
+echo\
+echo First pass finished!
+echo\
+ffmpeg -loglevel warning -stats %hwaccel% ^
+-ss %starttime% -t %time% -i %1 ^
+%filters% ^
+-c:v %videoencoder% %encoderopts% %presetcommand%%preset% -b:v %videobitrate%k %qpmincmd% %twopasscommand%2 ^
+-c:a %audioencoder% %audioencoderoptions%-b:a %audiobitrate%k ^
+-vsync vfr -movflags +faststart "%~dpn1 (compressed).%container%"
+:: End
+echo\
+echo Done!
+echo\
+color 0A
 del ffmpeg2pass-0.log
 del ffmpeg2pass-0.log.mbtree
 pause
