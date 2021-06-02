@@ -10,7 +10,7 @@
 :: HEVC
 :: H264
 ::
-set upscalingalgo=xbr
+set upscalingalgo=neighbor
 set targetresolution=2160
 set hwaccel=cpu
 set codec=HEVC
