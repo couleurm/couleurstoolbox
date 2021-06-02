@@ -48,8 +48,8 @@ if NOT %audiofile% == no (
     set /p audiostarttime=Where do you want the audio file to start: 
     set /p weights=How loud do you want the music to be? 0-200, 100 is input clip volume: 
 )
-set /p starttime=Where do you want your clip to start: 
-set /p time=How long should the clip be: 
+set /p starttime=Where do you want your clip to start (in seconds): 
+set /p time=How long after the start time do you want it to be: 
 set /p short=Should the clip be cropped to YouTube shorts size? yes or no: 
 set /p upscaleto4k=Do you want to upscale to 4K? yes or no: 
 set /p fadeintime=How long do you want the clip to fade in? 0 = disabled: 
