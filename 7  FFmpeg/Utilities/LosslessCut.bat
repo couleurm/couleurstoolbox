@@ -1,3 +1,4 @@
+@echo off
 :: Options
 set container=mp4
 :: Input check
