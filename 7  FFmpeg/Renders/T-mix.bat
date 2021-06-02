@@ -147,7 +147,7 @@ color 06
 :: FFmpeg
 ffmpeg -loglevel warning -stats %hwaccelarg% -i %1 ^
 -vf %dedupfilter%tmix=frames=%tmixframes%:weights="1",fps=%outfps%%upscalingfilter% ^
-%encoderarg% -c:a copy -vsync vfr "%~dpn1 (Resampled).%container%"
+%encoderarg% -c:a copy -vsync vfr "%~dpn1 (resampled).%container%"
 :: End
 echo\
 echo Done!
