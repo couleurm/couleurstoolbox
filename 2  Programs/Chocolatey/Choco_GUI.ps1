@@ -1,9 +1,14 @@
-﻿Write-Host
-Write-Host Installing Chocolatey. Ignore the following yellow lines if you have it already installed.
-Write-Host
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-#Installs Chocolatey
-
+﻿# Checking if Chocolatey is installed or not, it'll run the GUI after installing Chocolatey/Directly runs it if Chocolatey is already installed
+if (-not(Test-Path -Path "C:\ProgramData\chocolatey\choco.exe" -PathType Leaf)) {
+    try {
+        Write-Host "Chocolatey is not installed"
+	Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    }
+    catch {
+        throw $_.Exception.Message
+    }
+}
+else {
 #-------------------------------------------------------------#
 #----Initial GUI Declarations---------------------------------#
 #-------------------------------------------------------------#
@@ -11,7 +16,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 Add-Type -AssemblyName PresentationCore, PresentationFramework
 
 $Xaml = @"
-<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Width="720" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Title="Chocolatey program installer">
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Width="720" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Title="Couleur's GUI for Chocolatey, a program package manager">
 <Grid>
     
     <Border Width="690" Height="240" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -120,29 +125,36 @@ function FillDataContext($props){
        }
    }
 
-
+#       {"name" : "PLACEHOLDERNAME",		"IsChecked" : false,"icon":"PLACEHOLDERURL"},
 
 $DataObject = ConvertFrom-Json @"
 
 {
     "apps" : [
-        {"name" : "Discord","IsChecked" : false,"icon":"https://cdn.discordapp.com/attachments/830861516818350090/845690194882461726/discord.png"},
-        {"name" : "Chrome","IsChecked" : false,"icon":"https://cdn.discordapp.com/attachments/830861516818350090/845690191888908298/chrome.png"},
-        {"name" : "7Zip","IsChecked" : false,"icon":"https://media.discordapp.net/attachments/830861516818350090/845691656485208084/7ziplogo.png"},
-        {"name" : "Everything","IsChecked" : false,"icon":"https://media.discordapp.net/attachments/830861516818350090/845692307129761812/everything.png"},
-        {"name" : "FFmpeg","IsChecked" : false,"icon":"https://media.discordapp.net/attachments/830861516818350090/845692912117219348/ffmpeg_logo.png"},
-        {"name" : "paintnet","IsChecked" : false,"icon":"https://media.discordapp.net/attachments/830861516818350090/845693909996011520/paint.png"},
-        {"name" : "PowerToys","IsChecked" : false,"icon":"https://tweakers.net/ext/i/2003837622.png"},
-        {"name" : "Steam","IsChecked" : false,"icon":"https://s3.amazonaws.com/freebiesupply/large/2x/steam-logo-transparent.png"},
-        {"name" : "VLC","IsChecked" : false,"icon":"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/VLC_Icon.svg/904px-VLC_Icon.svg.png"},
-        {"name" : "MPV","IsChecked" : false,"icon":"https://mpv.io/images/mpv-logo-128-0baae5aa.png"},
-        {"name" : "Telegram","IsChecked" : false,"icon":"https://duckduckgo.com/i/1aacfedb.png"},
-        {"name" : "Minecraft","IsChecked" : false,"icon":"https://media.discordapp.net/attachments/830861516818350090/845697570608119829/minecraft.png"},
-        {"name" : "EarTrumpet","IsChecked" : false,"icon":"https://softati.com/wp-content/uploads/2019/03/EarTrumpet-Icon-50x50.png"},
-        {"name" : "VSCode","IsChecked" : false,"icon":"https://iseif.dev/wp-content/uploads/2019/06/vscode-logo.png"},
-        {"name" : "ShareX","IsChecked" : false,"icon":"https://duckduckgo.com/i/cb4de35d.png"},
-        {"name" : "TranslucentTB","IsChecked" : false,"icon":"https://raw.githubusercontent.com/TranslucentTB/TranslucentTB/release/TranslucentTB/TTB_color.ico"},
-	{"name" : "Spotify","IsChecked" : false,"icon":"https://img.talkandroid.com/uploads/2016/01/spotify-app-logo.png"}
+        {"name" : "Chrome",		"IsChecked" : false,"icon":"https://i.imgur.com/6aMbDrF.png"},
+        {"name" : "7Zip",		"IsChecked" : false,"icon":"https://i.imgur.com/zVZCzqB.png"},
+        {"name" : "Everything",		"IsChecked" : false,"icon":"https://i.imgur.com/oNtjX6L.png"},
+        {"name" : "FFmpeg",		"IsChecked" : false,"icon":"https://i.imgur.com/s56G8XH.png"},
+        {"name" : "FFmpeg-batch",	"IsChecked" : false,"icon":"https://i.imgur.com/I4ePtig.png"},
+        {"name" : "paint.net",	 	"IsChecked" : false,"icon":"https://i.imgur.com/x5OBRYW.png"},
+        {"name" : "PowerToys", 	 	"IsChecked" : false,"icon":"https://i.imgur.com/04ZEIcW.png"},
+        {"name" : "Steam",		"IsChecked" : false,"icon":"https://i.imgur.com/vD3M6ep.png"},
+        {"name" : "VLC",		"IsChecked" : false,"icon":"https://i.imgur.com/W6mEmmi.png"},
+        {"name" : "MPV",		"IsChecked" : false,"icon":"https://i.imgur.com/bDqMczn.png"},
+        {"name" : "Discord",		"IsChecked" : false,"icon":"https://i.imgur.com/1tRhtAk.png"},
+        {"name" : "Telegram",		"IsChecked" : false,"icon":"https://i.imgur.com/377PN6V.png"},
+        {"name" : "Minecraft",		"IsChecked" : false,"icon":"https://i.imgur.com/a1VgL8H.png"},
+        {"name" : "EarTrumpet",		"IsChecked" : false,"icon":"https://i.imgur.com/qqsquNG.png"},
+        {"name" : "VSCode",		"IsChecked" : false,"icon":"https://i.imgur.com/gAN9pW1.png"},
+        {"name" : "ShareX",		"IsChecked" : false,"icon":"https://i.imgur.com/cGpMoLw.png"},
+        {"name" : "TranslucentTB",	"IsChecked" : false,"icon":"https://i.imgur.com/DQknmr1.png"},
+	{"name" : "Spotify",		"IsChecked" : false,"icon":"https://i.imgur.com/t0xGHhr.png"},
+        {"name" : "WindirStat",		"IsChecked" : false,"icon":"https://i.imgur.com/yguJS4d.png"},
+        {"name" : "notepadplusplus",	"IsChecked" : false,"icon":"https://i.imgur.com/DB98n9l.png"},
+        {"name" : "AutoHotKey",		"IsChecked" : false,"icon":"https://i.imgur.com/ntAZE99.png"},
+        {"name" : "Spotify",		"IsChecked" : false,"icon":"https://i.imgur.com/i4oMF8W.png"},
+        {"name" : "Legendary",		"IsChecked" : false,"icon":"https://i.imgur.com/uDln3rF.png"},
+        {"name" : "OBS-studio",		"IsChecked" : false,"icon":"https://i.imgur.com/cSMv29M.png"}
         ],
         "resultString" : ""
 }
@@ -226,5 +238,4 @@ Start-RunspaceTask $JobCleanupScript @([PSObject]@{ Name='Jobs' ; Variable=$Jobs
 
 
 $Window.ShowDialog()
-
-
+}
