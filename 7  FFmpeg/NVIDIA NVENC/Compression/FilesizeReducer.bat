@@ -10,7 +10,7 @@
 :: HEVC
 :: H264
 ::
-set hwaccel=cpu
+set hwaccel=NVIDIA
 set codec=HEVC
 set cpupreset=fast
 set enablecpuwarning=yes

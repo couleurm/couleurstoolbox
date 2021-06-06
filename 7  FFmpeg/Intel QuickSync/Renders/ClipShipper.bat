@@ -10,7 +10,7 @@
 :: HEVC
 :: H264
 ::
-set hwaccel=cpu
+set hwaccel=Intel
 set codec=HEVC
 set cpupreset=veryfast
 set enablecpuwarning=yes

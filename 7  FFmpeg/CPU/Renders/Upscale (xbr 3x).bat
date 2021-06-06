@@ -10,13 +10,16 @@
 :: HEVC
 :: H264
 ::
+set upscalingalgo=xbr
+set targetresolution=2160
 set hwaccel=cpu
-set codec=HEVC
-set cpupreset=veryfast
-set enablecpuwarning=yes
+set codec=H264
+set cpupreset=fast
+set enablecpuwarning=no
 ::
 :: Advanced options
 ::
+set xbrscalefactor=3
 set container=mp4
 set forcepreset=no
 set forcequality=no
@@ -118,36 +121,22 @@ if %recreatecommand% == yes (
         set encoderarg=%encoderopts% %qualityarg% %quality% %globaloptions% %presetcommand% %encpreset%
     )
 )
-:: TMIX-SPECIFIC QUESTIONS
-set /p infps=FPS of your input file: 
-set /p outfps=FPS you want to render in: 
-set /p upscale=Do you want to upscale to 4k? yes, xbr or no: 
-if %upscale%0 == xbr0 (
-   set /p upscalefactor=How much you want to upscale: 
-)
-set /p dedup=Do you want to deduplicate frames? Can eliminate encoding/rendering lag, yes or no: 
-:: math
-set /A tmixframes=%infps%/%outfps%
-:: Upscaling
-if %upscale%0 == yes0 (
-   set upscalingfilter=,scale=3840:2160:flags=neighbor
-)
-if %upscale%0 == xbr0 (
-   set upscalingfilter=,xbr=%upscalefactor%
-)
-:: Dedup
-if %dedup%0 == yes0 (
-   set dedupfilter=mpdecimate=max=2,
+:: Filter
+if %upscalingalgo%0 == xbr0 (
+   set filter=-vf xbr=%xbrscalefactor%
+) else (
+   set filter=-vf scale=-2:%targetresolution%:flags=%upscalingalgo%
 )
 :: Running
 echo\
 echo Encoding...
+echo Upscaling to 2160p using the "%upscalingalgo%" algorithm
 echo\
 color 06
 :: FFmpeg
 ffmpeg -loglevel warning -stats %hwaccelarg% -i %1 ^
--vf %dedupfilter%tmix=frames=%tmixframes%:weights="1",fps=%outfps%%upscalingfilter% ^
-%encoderarg% -c:a copy -vsync vfr "%~dpn1 (resampled).%container%"
+%filter% %encoderarg% ^
+-c:a copy -vsync vfr "%~dpn1 (upscaled).%container%"
 :: End
 echo\
 echo Done!

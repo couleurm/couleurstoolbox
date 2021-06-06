@@ -12,7 +12,7 @@
 ::
 set upscalingalgo=neighbor
 set targetresolution=2160
-set hwaccel=cpu
+set hwaccel=AMD
 set codec=HEVC
 set cpupreset=veryfast
 set enablecpuwarning=yes
@@ -130,6 +130,7 @@ if %upscalingalgo%0 == xbr0 (
 :: Running
 echo\
 echo Encoding...
+echo Upscaling to 2160p using the "%upscalingalgo%" algorithm
 echo\
 color 06
 :: FFmpeg
