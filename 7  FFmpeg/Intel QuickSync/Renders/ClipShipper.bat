@@ -43,15 +43,21 @@ if %hwaccel% == cpu (
 )
 :: Questions
 echo All times are in seconds
-set /p audiofile=What audio file should be added? no to keep original audio: 
+set /p audiofile=What audio file should be added? n to keep original audio: 
 if NOT %audiofile% == no (
     set /p audiostarttime=Where do you want the audio file to start: 
     set /p weights=How loud do you want the music to be? 0-200, 100 is input clip volume: 
 )
 set /p starttime=Where do you want your clip to start (in seconds): 
 set /p time=How long after the start time do you want it to be: 
-set /p short=Should the clip be cropped to YouTube shorts size? yes or no: 
-set /p upscaleto4k=Do you want to upscale to 4K? yes or no: 
+set /p tmixenabled=Do you want to render (tmix)? y or n: 
+if %tmixenabled%0 == y0 (
+    set /p dedup=Do you want to deduplicate frames? Can eliminate encoding/rendering lag, y or n: 
+    set /p infps=FPS of your input file: 
+    set /p outfps=FPS you want to render in: 
+)
+set /p short=Should the clip be cropped to YouTube shorts size? y or n: 
+set /p upscaleto4k=Do you want to upscale to 4K? y or n: 
 set /p fadeintime=How long do you want the clip to fade in? 0 = disabled: 
 set /p fadeouttime=How long do you want the clip to fade out? 0 = disabled: 
 :: Encoder options
@@ -146,12 +152,26 @@ if %audiofile% == no (
     set amixoutputname=mixedaudio
 )
 :: Cropping to Shorts size
-if %short%0 == yes0 (
+if %short%0 == y0 (
     set filtershorts=;[%filterchaininput%]crop='in_h*0.5625'[cropped]
     set shortsoutputname=cropped
 ) else (
     set filtershorts=
     set shortsoutputname=%filterchaininput%
+)
+:: Tmix
+if %tmixenabled%0 == y0 (
+    set /A tmixframes=%infps%/%outfps%
+    if %dedup% == y0 (
+        set vfrfilter=mpdecimate=max=2,
+    )
+)
+if %tmixenabled%0 == y0 (
+    set filtertmix=;[%shortsoutputname%]%vfrfilter%tmix=frames=%tmixframes%,fps=%outfps%[tmixoutput]
+    set tmixoutputname=tmixoutput
+) else (
+    set filtertmix=
+    set tmixoutputname=%shortsoutputname%
 )
 :: Fading
 :: Directions
@@ -176,16 +196,16 @@ if NOT %fadeouttime%0 == 00 (set fadeenabled=1)
 if NOT %fadeintime%0 == 00 (set fadeenabled=1)
 :: Actual filter
 if %fadeenabled%0 == 10 (
-    set filterfade=;[%shortsoutputname%]%fadeinvfilter%%fadefseparator%%fadeoutvfilter%[fadedvideo];[%amixoutputname%]%fadeinafilter%%fadefseparator%%fadeoutafilter%[fadedaudio]
+    set filterfade=;[%tmixoutputname%]%fadeinvfilter%%fadefseparator%%fadeoutvfilter%[fadedvideo];[%amixoutputname%]%fadeinafilter%%fadefseparator%%fadeoutafilter%[fadedaudio]
     set fadeaoutputname=fadedaudio
     set fadevoutputname=fadedvideo
 ) else (
     set filterfade=
     set fadeaoutputname=%amixoutputname%
-    set fadevoutputname=%shortsoutputname%
+    set fadevoutputname=%tmixoutputname%
 )
 :: Upscaling to 4K
-if %upscaleto4k% == yes (
+if %upscaleto4k% == y0 (
     set filterupscale=;[%fadevoutputname%]scale=-2:2160:flags=neighbor[finalvideo]
     set upscaleoutputname=finalvideo
 ) else (
@@ -193,7 +213,7 @@ if %upscaleto4k% == yes (
     set upscaleoutputname=%fadevoutputname%
 )
 :: Audio input
-if %audiofile% == no (
+if %audiofile% == n0 (
     set ainput=
 ) else (
     set ainput=-ss %audiostarttime% -t %time% -i %audiofile%
@@ -214,7 +234,7 @@ color 06
 ffmpeg -loglevel warning -stats %hwaccelarg% ^
 -ss %starttime% -t %time% -i %1 %ainput% ^
 %encoderarg% %audioencoderopts% ^
--filter_complex "%filterinput%%filteramix%%filtershorts%%filterfade%%filterupscale%" ^
+-filter_complex "%filterinput%%filteramix%%filtershorts%%filtertmix%%filterfade%%filterupscale%" ^
 -map "%mapaudio%" -map "%mapvideo%" ^
 -vsync vfr -movflags +faststart ^
 "%~dpn1 (shipped).%container%"

@@ -1,2 +1,3 @@
 cd ..
-git pull https://github.com/couleurm/couleurstoolbox
+git fetch https://github.com/couleurm/couleurstoolbox.git
+git reset --hard FETCH_HEAD

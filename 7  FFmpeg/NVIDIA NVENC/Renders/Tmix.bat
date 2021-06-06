@@ -125,18 +125,18 @@ set /p upscale=Do you want to upscale to 4k? y, xbr or n:
 if %upscale%0 == xbr0 (
    set /p upscalefactor=How much do you want to upscale: 
 )
-set /p dedup=Do you want to deduplicate frames? Can eliminate encoding/rendering lag, yes or no: 
+set /p dedup=Do you want to deduplicate frames? Can eliminate encoding/rendering lag, y or n: 
 :: math
 set /A tmixframes=%infps%/%outfps%
 :: Upscaling
-if %upscale%0 == yes0 (
+if %upscale%0 == y0 (
    set upscalingfilter=,scale=3840:2160:flags=neighbor
 )
 if %upscale%0 == xbr0 (
    set upscalingfilter=,xbr=%upscalefactor%
 )
 :: Dedup
-if %dedup%0 == yes0 (
+if %dedup%0 == y0 (
    set dedupfilter=mpdecimate=max=2,
 )
 :: Running
