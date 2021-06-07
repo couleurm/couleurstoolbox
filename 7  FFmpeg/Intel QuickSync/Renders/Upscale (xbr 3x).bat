@@ -60,7 +60,7 @@ if %forcedencoderopts% == no (
         )
     )
     if %hwaccel% == NVIDIA (
-        set hwaccelarg=-hwaccel cuda
+        set hwaccelarg=-hwaccel cuda -threads 8
         if %codec% == H264 (
             set encoderopts=-c:v h264_nvenc -rc constqp
             set encpreset=p7
