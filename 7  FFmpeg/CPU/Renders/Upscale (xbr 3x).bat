@@ -10,13 +10,16 @@
 :: HEVC
 :: H264
 ::
+set upscalingalgo=xbr
+set targetresolution=2160
 set hwaccel=cpu
-set codec=HEVC
+set codec=H264
 set cpupreset=fast
-set enablecpuwarning=yes
+set enablecpuwarning=no
 ::
 :: Advanced options
 ::
+set xbrscalefactor=3
 set container=mp4
 set forcepreset=no
 set forcequality=no
@@ -47,13 +50,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v libx264
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=18
+            set quality=10
         )
         if %codec% == HEVC (
             set encoderopts=-c:v libx265
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=22
+            set quality=14
         )
     )
     if %hwaccel% == NVIDIA (
@@ -62,13 +65,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v h264_nvenc -rc constqp
             set encpreset=p7
             set qualityarg=-qp
-            set quality=19
+            set quality=15
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_nvenc -rc constqp
             set encpreset=p7
             set qualityarg=-qp
-            set quality=22
+            set quality=18
         )
     )
     if %hwaccel% == AMD (
@@ -76,13 +79,13 @@ if %forcedencoderopts% == no (
         if %codec% == H264 (
             set encoderopts=-c:v h264_amf
             set encpreset=quality
-            set quality=18
+            set quality=12
             set amd=yes
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_amf
             set encpreset=quality
-            set quality=22
+            set quality=16
             set amd=yes
         )
     )
@@ -92,13 +95,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v h264_qsv
             set encpreset=veryslow
             set qualityarg=-global_quality:v
-            set quality=23
+            set quality=15
         )
         if %codec% == HEVC (
             set encoderopts=-c:v hevc_qsv
             set encpreset=veryslow
             set qualityarg=-global_quality:v
-            set quality=26
+            set quality=18
         )
     )
     :: Fuck you batch
@@ -118,16 +121,22 @@ if %recreatecommand% == yes (
         set encoderarg=%encoderopts% %qualityarg% %quality% %globaloptions% %presetcommand% %encpreset%
     )
 )
+:: Filter
+if %upscalingalgo%0 == xbr0 (
+   set filter=-vf xbr=%xbrscalefactor%
+) else (
+   set filter=-vf scale=-2:%targetresolution%:flags=%upscalingalgo%
+)
 :: Running
 echo\
 echo Encoding...
+echo Upscaling to 2160p using the "%upscalingalgo%" algorithm
 echo\
 color 06
 :: FFmpeg
 ffmpeg -loglevel warning -stats %hwaccelarg% -i %1 ^
-%encoderarg% -g 600 -map 0 ^
--c:a libopus -b:a 192k ^
--movflags +faststart "%~dpn1 (smaller).%container%"
+%filter% %encoderarg% ^
+-c:a copy -vsync vfr "%~dpn1 (upscaled).%container%"
 :: End
 echo\
 echo Done!

@@ -10,7 +10,7 @@
 :: HEVC
 :: H264
 ::
-set hwaccel=cpu
+set hwaccel=AMD
 set codec=HEVC
 set cpupreset=veryfast
 set enablecpuwarning=yes
@@ -121,22 +121,22 @@ if %recreatecommand% == yes (
 :: TMIX-SPECIFIC QUESTIONS
 set /p infps=FPS of your input file: 
 set /p outfps=FPS you want to render in: 
-set /p upscale=Do you want to upscale to 4k? yes, xbr or no: 
+set /p upscale=Do you want to upscale to 4k? y, xbr or n: 
 if %upscale%0 == xbr0 (
-   set /p upscalefactor=How much you want to upscale: 
+   set /p upscalefactor=How much do you want to upscale: 
 )
-set /p dedup=Do you want to deduplicate frames? Can eliminate encoding/rendering lag, yes or no: 
+set /p dedup=Do you want to deduplicate frames? Can eliminate encoding/rendering lag, y or n: 
 :: math
 set /A tmixframes=%infps%/%outfps%
 :: Upscaling
-if %upscale%0 == yes0 (
+if %upscale%0 == y0 (
    set upscalingfilter=,scale=3840:2160:flags=neighbor
 )
 if %upscale%0 == xbr0 (
    set upscalingfilter=,xbr=%upscalefactor%
 )
 :: Dedup
-if %dedup%0 == yes0 (
+if %dedup%0 == y0 (
    set dedupfilter=mpdecimate=max=2,
 )
 :: Running
