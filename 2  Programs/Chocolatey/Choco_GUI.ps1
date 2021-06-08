@@ -148,11 +148,10 @@ $DataObject = ConvertFrom-Json @"
         {"name" : "VSCode",		"IsChecked" : false,"icon":"https://i.imgur.com/gAN9pW1.png"},
         {"name" : "ShareX",		"IsChecked" : false,"icon":"https://i.imgur.com/cGpMoLw.png"},
         {"name" : "TranslucentTB",	"IsChecked" : false,"icon":"https://i.imgur.com/DQknmr1.png"},
-	{"name" : "Spotify",		"IsChecked" : false,"icon":"https://i.imgur.com/t0xGHhr.png"},
+		{"name" : "Spotify",		"IsChecked" : false,"icon":"https://i.imgur.com/t0xGHhr.png"},
         {"name" : "WindirStat",		"IsChecked" : false,"icon":"https://i.imgur.com/yguJS4d.png"},
         {"name" : "notepadplusplus",	"IsChecked" : false,"icon":"https://i.imgur.com/DB98n9l.png"},
         {"name" : "AutoHotKey",		"IsChecked" : false,"icon":"https://i.imgur.com/ntAZE99.png"},
-        {"name" : "Spotify",		"IsChecked" : false,"icon":"https://i.imgur.com/i4oMF8W.png"},
         {"name" : "Legendary",		"IsChecked" : false,"icon":"https://i.imgur.com/uDln3rF.png"},
         {"name" : "OBS-studio",		"IsChecked" : false,"icon":"https://i.imgur.com/cSMv29M.png"}
         ],
