@@ -9,7 +9,7 @@
 :: Available codecs:
 :: HEVC
 :: H264
-::
+@echo off
 set hwaccel=Intel
 set codec=HEVC
 set cpupreset=veryfast
@@ -44,7 +44,7 @@ if %hwaccel% == cpu (
 :: Questions
 echo All times are in seconds
 set /p audiofile=What audio file should be added? n to keep original audio: 
-if NOT %audiofile% == no (
+if NOT %audiofile%0 == n0 (
     set /p audiostarttime=Where do you want the audio file to start: 
     set /p weights=How loud do you want the music to be? 0-200, 100 is input clip volume: 
 )
@@ -144,7 +144,7 @@ if %recreatecommand% == yes (
 set filterinput=[0:v]format=yuv420p[input]
 set filterchaininput=input
 :: Audio mix
-if %audiofile% == no (
+if %audiofile%0 == n0 (
     set filteramix=
     set amixoutputname=0:a:0
 ) else (
@@ -190,7 +190,7 @@ if NOT %fadeouttime%0 == 00 (
     if NOT %fadeintime%0 == 00 (
         set fadefseparator=,
     )
-)
+) 
 :: Choosing if fading is enabled or not
 if NOT %fadeouttime%0 == 00 (set fadeenabled=1)
 if NOT %fadeintime%0 == 00 (set fadeenabled=1)
@@ -213,7 +213,7 @@ if %upscaleto4k% == y0 (
     set upscaleoutputname=%fadevoutputname%
 )
 :: Audio input
-if %audiofile% == n0 (
+if %audiofile%0 == n0 (
     set ainput=
 ) else (
     set ainput=-ss %audiostarttime% -t %time% -i %audiofile%
