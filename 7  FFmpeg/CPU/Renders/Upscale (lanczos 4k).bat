@@ -10,16 +10,16 @@
 :: HEVC
 :: H264
 ::
-set upscalingalgo=neighbor
+set upscalingalgo=lanczos
 set targetresolution=2160
-set hwaccel=Intel
-set codec=HEVC
-set cpupreset=veryfast
-set enablecpuwarning=yes
+set hwaccel=cpu
+set codec=H264
+set cpupreset=fast
+set enablecpuwarning=no
 ::
 :: Advanced options
 ::
-set xbrscalefactor=3
+set xbrhqxscalefactor=3
 set container=mp4
 set forcepreset=no
 set forcequality=no
@@ -50,13 +50,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v libx264
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=10
+            set quality=15
         )
         if %codec% == HEVC (
             set encoderopts=-c:v libx265
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=14
+            set quality=18
         )
     )
     if %hwaccel% == NVIDIA (
@@ -122,8 +122,14 @@ if %recreatecommand% == yes (
     )
 )
 :: Filter
+if %upscalingalgo%0 == hqx0 (
+   set xbrhqx=1
+)
 if %upscalingalgo%0 == xbr0 (
-   set filter=-vf xbr=%xbrscalefactor%
+   set xbrhqx=1
+)
+if %xbrhqx%0 == 10 (
+   set filter=-vf %upscalingalgo%=%xbrhqxscalefactor%
 ) else (
    set filter=-vf scale=-2:%targetresolution%:flags=%upscalingalgo%
 )

@@ -68,13 +68,13 @@ if %forcedencoderopts% == no (
             set encoderopts=-c:v libx264
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=10
+            set quality=15
         )
         if %codec% == HEVC (
             set encoderopts=-c:v libx265
             set encpreset=%cpupreset%
             set qualityarg=-crf
-            set quality=14
+            set quality=18
         )
     )
     if %hwaccel% == NVIDIA (
