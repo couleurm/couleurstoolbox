@@ -22,6 +22,7 @@ set forcepreset=no
 set forcequality=no
 set presetcommand=-preset 
 set forcedencoderopts=no
+set dedup=no
 :: DON'T TOUCH ANYTHING BEYOND THIS POINT
 color 0f
 :: Input check
@@ -121,22 +122,24 @@ if %recreatecommand% == yes (
 :: TMIX-SPECIFIC QUESTIONS
 set /p infps=FPS of your input file: 
 set /p outfps=FPS you want to render in: 
-set /p upscale=Do you want to upscale to 4k? y, xbr or n: 
-if %upscale%0 == xbr0 (
+set /p upscale=Do you want to upscale to 4k? y, hqx or n: 
+if %upscale%0 == hqx0 (
    set /p upscalefactor=How much do you want to upscale: 
 )
-set /p dedup=Do you want to deduplicate frames? Can eliminate encoding/rendering lag, y or n: 
 :: math
+:: fucking batch doesn't know what a float is
+set /A infps=%infps%*100
 set /A tmixframes=%infps%/%outfps%
+set /A tmixframes=%tmixframes%/70
 :: Upscaling
 if %upscale%0 == y0 (
-   set upscalingfilter=,scale=3840:2160:flags=neighbor
+   set upscalingfilter=,scale=3840:2160:flags=lanczos
 )
-if %upscale%0 == xbr0 (
-   set upscalingfilter=,xbr=%upscalefactor%
+if %upscale%0 == hqx0 (
+   set upscalingfilter=,hqx=%upscalefactor%
 )
 :: Dedup
-if %dedup%0 == y0 (
+if %dedup%0 == yes0 (
    set dedupfilter=mpdecimate=max=2,
 )
 :: Running
