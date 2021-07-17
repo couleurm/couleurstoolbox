@@ -1,4 +1,4 @@
-﻿# Checking if Chocolatey is installed or not, it'll run the GUI after installing Chocolatey/Directly runs it if Chocolatey is already installed
+# Checking if Chocolatey is installed or not, it'll run the GUI after installing Chocolatey/Directly runs it if Chocolatey is already installed
 if (-not(Test-Path -Path "C:\ProgramData\chocolatey\choco.exe" -PathType Leaf)) {
     try {
         Write-Host "Chocolatey is not installed"
@@ -143,6 +143,7 @@ $DataObject = ConvertFrom-Json @"
         {"name" : "MPV",		"IsChecked" : false,"icon":"https://i.imgur.com/bDqMczn.png"},
         {"name" : "Discord",		"IsChecked" : false,"icon":"https://i.imgur.com/1tRhtAk.png"},
         {"name" : "Telegram",		"IsChecked" : false,"icon":"https://i.imgur.com/377PN6V.png"},
+        {"name" : "Element",		"IsChecked" : false,"icon":"https://i.imgur.com/NlJfGTx.png"},
         {"name" : "Minecraft",		"IsChecked" : false,"icon":"https://i.imgur.com/a1VgL8H.png"},
         {"name" : "EarTrumpet",		"IsChecked" : false,"icon":"https://i.imgur.com/qqsquNG.png"},
         {"name" : "VSCode",		"IsChecked" : false,"icon":"https://i.imgur.com/gAN9pW1.png"},
