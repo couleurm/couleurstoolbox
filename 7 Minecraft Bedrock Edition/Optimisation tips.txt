@@ -1,0 +1,6 @@
+1. Turn off custom skies, if you have an APU, this will boost your fps by around 20-30 fps
+2. Turn off smooth lighting and antialiasing, these are very gpu heavy tasks.
+3. Why have fancy graphics on... there's no competitive advantage, nothing really looks better
+or worse
+4. Render distance doesn't really matter on bedrock edition servers, as long as it's not above
+the default maximum value, I doubt your fps will change much
