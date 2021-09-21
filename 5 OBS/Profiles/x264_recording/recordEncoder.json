@@ -1,0 +1,1 @@
+{"crf":1,"keyint_sec":4,"preset":"ultrafast","profile":"high","rate_control":"CRF","x264opts":"qpmin=20 qpmax=20 ref=0 merange=4 direct=none weightp=0 no-chroma-me"}
