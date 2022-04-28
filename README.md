@@ -1,4 +1,15 @@
-# Welcome to this very handy little toolbox I've made.
+<p align="center">
+    Couleur's Toolbox  </br>
+    <strong>An easier way to tweak Windows, its settings, & quickly install & configure programs.</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/couleurm/couleurstoolbox/archive/refs/heads/main.zip">Download</a>
+  •
+  <a href="https://dsc.gg/ctt">Discord Server</a>
+  •
+  <a href="https://github.com/couleurm/couleurstoolbox/blob/main/LICENSE.md">License</a>
+</p>
 
 This has been made with the intent of making it easier to tweak Windows and it's settings, quickly install & configure programs. It consists of a bunch of scripts and links to make your life easier, weither you're a newbie or a veteran.
 
