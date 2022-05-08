@@ -1,3 +1,0 @@
-Movies & TV is slower and makes you pay to get the H265/HEVC codec.
-
-VLC is faster, less bloaty and free.

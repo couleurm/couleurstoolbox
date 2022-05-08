@@ -1,5 +1,5 @@
 [{000214A0-0000-0000-C000-000000000046}]
-Prop3=19,0
+Prop3=19,11
 [InternetShortcut]
 IDList=
-URL=ms-settings:network-status
+URL=https://github.com/stax76/mpv.net/releases
