@@ -7,21 +7,14 @@ Couleur's Toolbox
 </br>
 <strong>Give yourself a headstart when setting up Windows</strong>
 </br>
-  <a href="https://github.com/couleurm/couleurstoolbox/archive/refs/heads/main.zip">Download</a>
-  •
-  <a href="https://dsc.gg/ctt">Discord Server</a>
-  •
-  <a href="https://github.com/couleurm/couleurstoolbox/blob/main/LICENSE.md">License</a>
-  </br>
-      <a href="https://github.com/couleurm/couleurstoolbox/archive/refs/heads/main.zip">
-      <img src="https://img.shields.io/badge/Download-%20ZIP-green" alt="Download" />
+    <a href="https://github.com/couleurm/couleurstoolbox/archive/refs/heads/main.zip">
+    <img src="https://img.shields.io/badge/Download-%20ZIP-green" alt="Download" />
     <a href="https://discord.com/invite/aPVMJy78Pa">
-        <img src="https://img.shields.io/discord/774315187183288411?color=7389D8&labelColor=6A7EC2&label=Discord&logo=discord&logoColor=white alt="Discord" />
-    </a>
+    <img src="https://img.shields.io/discord/774315187183288411?color=7389D8&labelColor=6A7EC2&label=Discord&logo=discord&logoColor=white alt="Discord" />
+</a>
     <a href="https://github.com/couleurm/couleurstoolbox/blob/master/LICENSE.md">
-        <img src="https://img.shields.io/github/license/couleurm/couleurstoolbox.svg" alt="License" />
-    </a>
-
+    <img src="https://img.shields.io/github/license/couleurm/couleurstoolbox.svg" alt="License" />
+</a>
 </p>
 
 This has been made with the intent of making it easier to tweak Windows and it's settings, quickly install & configure programs. It consists of a bunch of scripts (such as [TweakList](https://github.com/couleur-tweak-tips/TweakList) or [The Installer](https://github.com/couleur-tweak-tips/the-installer)) and shortcuts/links to make your life easier, whether you're a newbie or a veteran.
