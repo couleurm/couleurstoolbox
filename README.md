@@ -8,12 +8,12 @@ Couleur's Toolbox
 <strong>Give yourself a headstart when setting up Windows</strong>
 </br>
     <a href="https://github.com/couleurm/couleurstoolbox/archive/refs/heads/main.zip">
-    <img src="https://img.shields.io/badge/Download-%20ZIP-green" alt="Download" />
+    <img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge" alt="Download" />
     <a href="https://discord.com/invite/aPVMJy78Pa">
-    <img src="https://img.shields.io/discord/774315187183288411?color=7389D8&labelColor=6A7EC2&label=Discord&logo=discord&logoColor=white alt="Discord" />
+    <img src="https://img.shields.io/discord/774315187183288411?color=7389D8&labelColor=6A7EC2&label=Discord&logo=discord&logoColor=white&style=for-the-badge" alt="Discord" />
 </a>
     <a href="https://github.com/couleurm/couleurstoolbox/blob/master/LICENSE.md">
-    <img src="https://img.shields.io/github/license/couleurm/couleurstoolbox.svg" alt="License" />
+    <img src="https://img.shields.io/github/license/couleurm/couleurstoolbox.svg?style=for-the-badge" alt="License" />
 </a>
 </p>
 
