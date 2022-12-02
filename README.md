@@ -5,7 +5,7 @@
 Couleur's Toolbox
 </br>
 </br>
-<strong>Give yourself a headstart when setting up Windows</strong>
+<strong>Give yourself a headstart while setting up Windows</strong>
 </br>
     <a href="https://github.com/couleurm/couleurstoolbox/archive/refs/heads/main.zip">
     <img src="https://img.shields.io/badge/Download-%20ZIP-green&?style=for-the-badge" alt="Download" />
@@ -17,7 +17,7 @@ Couleur's Toolbox
 </a>
 </p>
 
-This has been made with the intent of making it easier to tweak Windows and it's settings, quickly install & configure programs. It consists of a bunch of scripts (such as [TweakList](https://github.com/couleur-tweak-tips/TweakList) or [The Installer](https://github.com/couleur-tweak-tips/the-installer)) and shortcuts/links to make your life easier, whether you're a newbie or a veteran.
+This has been made with the intent of making it easier to tweak Windows and its settings, quickly install & configure programs. It consists of a bunch of scripts (such as [TweakList](https://github.com/couleur-tweak-tips/TweakList) or [The Installer](https://github.com/couleur-tweak-tips/the-installer)) and shortcuts/links to make your life easier, whether you're a newbie or a veteran.
 
 ## Download
 
@@ -36,6 +36,6 @@ Inspiration came from:
 
 - [MajorGeek's Windows Tweaks](https://github.com/MajorGeek/MajorGeeks-Windows-Tweaks)
 - [Fr33thy's to-do folder](https://drive.google.com/drive/folders/1ocl1dZpyeRjgNGpmEIA-Ay4BJ8Jex_l1)
-- [ChrisTitusTech's toolbox](https://github.com/ChrisTitusTech/win10script)
+- [ChrisTitusTech's Toolbox](https://github.com/ChrisTitusTech/win10script)
 
 Join [**CTT**](https://dsc.gg/ctt) (DM me on there if you wish to contact me)

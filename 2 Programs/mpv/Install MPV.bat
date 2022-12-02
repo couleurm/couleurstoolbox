@@ -18,7 +18,7 @@ if %answer% == Heavy (
 mkdir C:\mpv
 copy z.ps1 C:\mpv\install.ps1
 cd C:\mpv
-powershell -noprofile -nologo -executionpolicy bypass -File C:\mpv\install.ps1
+PowerShell.exe -noprofile -nologo -executionpolicy bypass -File C:\mpv\install.ps1
 del /q *.7z
 del /s /q 7z\*.*
 rmdir /s /q 7z
