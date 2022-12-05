@@ -1,2 +1,2 @@
 @echo off
-start /min powershell -NoProfile -Command "Start-Process -FilePath powershell -Verb RunAs -ArgumentList '-NoExit -NoProfile -Command \"Get-AppxPackage *Photos* ^| Remove-AppxPackage\"'"
+start /min PowerShell.exe -NoProfile -Command "Start-Process -FilePath PowerShell.exe -Verb RunAs -ArgumentList '-NoExit -NoProfile -Command \"Get-AppxPackage *Photos* ^| Remove-AppxPackage\"'"
