@@ -1,3 +1,11 @@
+# Deprecation of my toolbox, and what next
+
+I've let this project gather dust over time and it also gathered a lot of stars, I'm archiving because I don't actually use it / work on it anymore.
+
+This has been deprecated in favor of [TweakList](https://github.com/couleur-tweak-tips/TweakList), a 1-command PowerShell library with similar post-install goals
+
+Feel free to glance through the README:
+
 <p align="center">
 <img align=center src="https://i.imgur.com/oeLgi3S.png" alt="Bento box" width="75" />
 </br>
